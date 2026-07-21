@@ -1225,6 +1225,197 @@
             box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
         }
 
+        /* Checkout Modal */
+        .checkout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 300;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .checkout-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 450px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            z-index: 301;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-modal.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .checkout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .checkout-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .checkout-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .checkout-close:hover {
+            color: var(--text-primary);
+        }
+
+        .checkout-body {
+            padding: 25px 30px;
+        }
+
+        .checkout-items {
+            margin-bottom: 20px;
+        }
+
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+        }
+
+        .checkout-item-name {
+            color: var(--text-secondary);
+        }
+
+        .checkout-item-price {
+            font-weight: 600;
+        }
+
+        .checkout-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .checkout-total span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .checkout-total-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .checkout-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkout-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .checkout-input:focus {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .checkout-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .checkout-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .checkout-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            color: #0a0a0a;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .checkout-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .checkout-success {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--glass);
+            border: 2px solid var(--accent-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent-1);
+            margin: 0 auto 20px;
+        }
+
+        .success-text {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
         /* Footer */
         footer {
             padding: 80px 60px 40px;
@@ -1534,8 +1725,40 @@
                 <span>Итого</span>
                 <span class="cart-total-price" id="cartTotal">0 ₽</span>
             </div>
-            <button class="cart-checkout">Оформить заказ</button>
+            <button class="cart-checkout" id="cartCheckout">Оформить заказ</button>
         </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-overlay" id="checkoutOverlay"></div>
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-header">
+            <h3 class="checkout-title">Оформление заказа</h3>
+            <button class="checkout-close" id="checkoutClose">&times;</button>
+        </div>
+        <div class="checkout-body">
+            <div class="checkout-items" id="checkoutItems"></div>
+            <div class="checkout-total">
+                <span>Итого</span>
+                <span class="checkout-total-price" id="checkoutTotal">0 ₽</span>
+            </div>
+            <form class="checkout-form" id="checkoutForm">
+                <input type="text" class="checkout-input" placeholder="Имя" required>
+                <input type="tel" class="checkout-input" placeholder="Телефон" required>
+                <input type="text" class="checkout-input" placeholder="Город" required>
+                <textarea class="checkout-input checkout-textarea" placeholder="Адрес доставки" required></textarea>
+                <button type="submit" class="checkout-submit">Подтвердить заказ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div class="checkout-overlay" id="successOverlay"></div>
+    <div class="checkout-modal checkout-success" id="successModal">
+        <div class="success-icon">✓</div>
+        <h3 class="checkout-title">Заказ оформлен!</h3>
+        <p class="success-text">Мы свяжемся с вами для подтверждения</p>
+        <button class="checkout-submit" id="successClose">Отлично</button>
     </div>
 
     <!-- Hero Section -->
@@ -1954,6 +2177,65 @@
         cartBtn.addEventListener('click', openCart);
         cartClose.addEventListener('click', closeCart);
         cartOverlay.addEventListener('click', closeCart);
+
+        // Checkout
+        const cartCheckout = document.getElementById('cartCheckout');
+        const checkoutOverlay = document.getElementById('checkoutOverlay');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const checkoutClose = document.getElementById('checkoutClose');
+        const checkoutItems = document.getElementById('checkoutItems');
+        const checkoutTotal = document.getElementById('checkoutTotal');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const successOverlay = document.getElementById('successOverlay');
+        const successModal = document.getElementById('successModal');
+        const successClose = document.getElementById('successClose');
+
+        function openCheckout() {
+            if (cart.length === 0) return;
+            closeCart();
+            let total = 0;
+            checkoutItems.innerHTML = '';
+            cart.forEach(item => {
+                total += item.price;
+                checkoutItems.innerHTML += '<div class="checkout-item"><span class="checkout-item-name">' + item.name + ' (' + item.size + ')</span><span class="checkout-item-price">' + item.price.toLocaleString('ru-RU') + ' ₽</span></div>';
+            });
+            checkoutTotal.textContent = total.toLocaleString('ru-RU') + ' ₽';
+            checkoutOverlay.classList.add('open');
+            checkoutModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCheckout() {
+            checkoutOverlay.classList.remove('open');
+            checkoutModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function openSuccess() {
+            closeCheckout();
+            successOverlay.classList.add('open');
+            successModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSuccess() {
+            successOverlay.classList.remove('open');
+            successModal.classList.remove('open');
+            document.body.style.overflow = '';
+            cart.length = 0;
+            updateCart();
+        }
+
+        cartCheckout.addEventListener('click', openCheckout);
+        checkoutClose.addEventListener('click', closeCheckout);
+        checkoutOverlay.addEventListener('click', closeCheckout);
+        successClose.addEventListener('click', closeSuccess);
+        successOverlay.addEventListener('click', closeSuccess);
+
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            openSuccess();
+        });
 
         // Size Selection for product
         document.querySelectorAll('.cp-size').forEach(btn => {
