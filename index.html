@@ -3155,7 +3155,7 @@
                 if (st === 'cancelled') {
                     statusHtml = '<div class="admin-status-trigger" style="color:' + statusColors[st] + ';cursor:default;opacity:0.6"><span class="admin-status-dot" style="background:' + statusColors[st] + '"></span>' + statusMap[st] + '</div>';
                 } else {
-                    const optionsHtml = statusOrder.filter(s => s !== 'cancelled').map(s => '<div class="admin-status-option' + (s === st ? ' selected' : '') + '" data-value="' + s + '"><span class="admin-status-dot" style="background:' + statusColors[s] + '"></span>' + statusMap[s] + '</div>').join('');
+                    const optionsHtml = statusOrder.map(s => '<div class="admin-status-option' + (s === st ? ' selected' : '') + '" data-value="' + s + '"><span class="admin-status-dot" style="background:' + statusColors[s] + '"></span>' + statusMap[s] + '</div>').join('');
                     statusHtml = '<div class="admin-status-trigger" style="color:' + statusColors[st] + '"><span class="admin-status-dot" style="background:' + statusColors[st] + '"></span>' + statusMap[st] + '</div><div class="admin-status-dropdown">' + optionsHtml + '</div>';
                 }
                 return '<div class="admin-product-card"><div class="admin-product-info"><div class="admin-product-name">' + (u.name || o.userId) + ' <span style="color:var(--text-secondary);font-weight:400;font-size:0.8rem">(' + o.userId + ')</span></div><div class="admin-product-meta">' + o.date + ' — ' + o.items.join(', ') + '</div></div><div style="display:flex;align-items:center;gap:10px"><span class="admin-product-name">' + o.total.toLocaleString('ru-RU') + ' ₽</span><div class="admin-status-select" data-id="' + o.id + '">' + statusHtml + '</div></div></div>';
