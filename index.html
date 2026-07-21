@@ -1688,6 +1688,143 @@
             color: #ff4444;
         }
 
+        /* Admin Panel */
+        .admin-modal {
+            width: 600px;
+            max-height: 85vh;
+        }
+
+        .admin-modal .auth-modal {
+            overflow-y: auto;
+        }
+
+        .admin-body {
+            padding: 20px 30px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .admin-tab {
+            padding: 8px 18px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .admin-tab:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+
+        .admin-tab.active {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+            color: #0a0a0a;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-add-form {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .admin-add-form .auth-input {
+            margin-bottom: 10px;
+        }
+
+        .admin-add-form .auth-submit {
+            margin-top: 5px;
+        }
+
+        .admin-product-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .admin-product-info {
+            flex: 1;
+        }
+
+        .admin-product-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .admin-product-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .admin-product-delete {
+            padding: 6px 14px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            border-radius: 8px;
+            color: #ff4444;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-product-delete:hover {
+            background: rgba(255, 68, 68, 0.2);
+        }
+
+        .admin-user-card {
+            padding: 12px 15px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .admin-user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .admin-user-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .admin-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(255, 200, 0, 0.15);
+            color: #ccaa00;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
         /* Footer */
         footer {
             padding: 80px 60px 40px;
@@ -2098,6 +2235,50 @@
                 </div>
             </div>
             <button class="auth-submit profile-logout" id="profileLogout">Выйти</button>
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="auth-modal admin-modal" id="adminModal">
+        <div class="auth-header">
+            <h3 class="auth-title">Админ-панель</h3>
+            <button class="auth-close" id="adminClose">&times;</button>
+        </div>
+        <div class="admin-body">
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="orders">Заказы</button>
+                <button class="admin-tab" data-tab="products">Товары</button>
+                <button class="admin-tab" data-tab="users">Пользователи</button>
+            </div>
+
+            <!-- Orders Tab -->
+            <div class="admin-panel active" id="adminOrders">
+                <div id="adminOrdersList">
+                    <p class="profile-empty">Заказов пока нет</p>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div class="admin-panel" id="adminProducts">
+                <div class="admin-add-form">
+                    <select class="auth-input" id="adminProductCollection">
+                        <option value="floral-paradise">Floral Paradise</option>
+                        <option value="urban-echo">Urban Echo</option>
+                    </select>
+                    <input type="text" class="auth-input" placeholder="Название" id="adminProductName">
+                    <input type="number" class="auth-input" placeholder="Цена (₽)" id="adminProductPrice">
+                    <input type="text" class="auth-input" placeholder="Описание" id="adminProductDesc">
+                    <input type="text" class="auth-input" placeholder="URL картинки (фронт)" id="adminProductImgFront">
+                    <input type="text" class="auth-input" placeholder="URL картинки (зад)" id="adminProductImgBack">
+                    <button class="auth-submit" id="adminAddProduct">Добавить товар</button>
+                </div>
+                <div id="adminProductsList"></div>
+            </div>
+
+            <!-- Users Tab -->
+            <div class="admin-panel" id="adminUsers">
+                <div id="adminUsersList"></div>
+            </div>
         </div>
     </div>
 
@@ -2592,24 +2773,30 @@
         });
 
         // Auth System
+        const ADMIN_EMAIL = 'admin@zmr.store';
+        const ADMIN_PASS = 'admin123';
         let currentUser = localStorage.getItem('zmr_current') || null;
         const profileBtn = document.getElementById('profileBtn');
         const authOverlay = document.getElementById('authOverlay');
         const loginModal = document.getElementById('loginModal');
         const registerModal = document.getElementById('registerModal');
         const profileModal = document.getElementById('profileModal');
+        const adminModal = document.getElementById('adminModal');
+
+        function isAdmin() { return currentUser === ADMIN_EMAIL; }
 
         function openOverlay() { authOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
-        function closeAllAuth() { authOverlay.classList.remove('open'); loginModal.classList.remove('open'); registerModal.classList.remove('open'); profileModal.classList.remove('open'); document.body.style.overflow = ''; }
+        function closeAllAuth() { authOverlay.classList.remove('open'); loginModal.classList.remove('open'); registerModal.classList.remove('open'); profileModal.classList.remove('open'); adminModal.classList.remove('open'); document.body.style.overflow = ''; }
         function openLogin() { closeAllAuth(); openOverlay(); loginModal.classList.add('open'); document.getElementById('loginError').textContent = ''; }
         function openRegister() { closeAllAuth(); openOverlay(); registerModal.classList.add('open'); document.getElementById('registerError').textContent = ''; }
+
         function openProfile() {
             closeAllAuth(); openOverlay(); profileModal.classList.add('open');
             const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
             const user = users[currentUser];
             if (!user) return;
             document.getElementById('profileAvatar').textContent = user.name.charAt(0).toUpperCase();
-            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileName').textContent = user.name + (isAdmin() ? ' <span class="admin-badge">АДМИН</span>' : '');
             document.getElementById('profileEmail').textContent = user.email;
             document.getElementById('profilePhone').textContent = user.phone;
             const ordersEl = document.getElementById('profileOrders');
@@ -2618,6 +2805,22 @@
             } else {
                 ordersEl.innerHTML = '<p class="profile-empty">Заказов пока нет</p>';
             }
+            if (isAdmin()) {
+                let btn = document.getElementById('openAdmin');
+                if (!btn) {
+                    btn = document.createElement('button');
+                    btn.id = 'openAdmin';
+                    btn.className = 'auth-submit';
+                    btn.style.cssText = 'background: var(--glass); border: 1px solid var(--glass-border); color: var(--accent-1); margin-top: 10px;';
+                    btn.textContent = 'Админ-панель';
+                    document.getElementById('profileLogout').before(btn);
+                    btn.addEventListener('click', openAdmin);
+                }
+                btn.style.display = 'block';
+            } else {
+                const btn = document.getElementById('openAdmin');
+                if (btn) btn.style.display = 'none';
+            }
             profileBtn.classList.add('logged-in');
         }
 
@@ -2625,10 +2828,98 @@
             if (currentUser) { profileBtn.classList.add('logged-in'); } else { profileBtn.classList.remove('logged-in'); }
         }
 
+        function openAdmin() {
+            closeAllAuth(); openOverlay(); adminModal.classList.add('open');
+            loadAdminOrders();
+            loadAdminProducts();
+            loadAdminUsers();
+        }
+
+        // Admin Tabs
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('admin' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)).classList.add('active');
+            });
+        });
+
+        function loadAdminOrders() {
+            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+            let allOrders = [];
+            Object.keys(users).forEach(email => {
+                if (users[email].orders) {
+                    users[email].orders.forEach(o => {
+                        allOrders.push({ ...o, user: users[email].name, email });
+                    });
+                }
+            });
+            const el = document.getElementById('adminOrdersList');
+            if (allOrders.length === 0) {
+                el.innerHTML = '<p class="profile-empty">Заказов пока нет</p>';
+                return;
+            }
+            el.innerHTML = allOrders.reverse().map(o => '<div class="admin-product-card"><div class="admin-product-info"><div class="admin-product-name">' + o.user + ' <span style="color:var(--text-secondary);font-weight:400;font-size:0.8rem">(' + o.email + ')</span></div><div class="admin-product-meta">' + o.date + ' — ' + o.items.join(', ') + '</div></div><span class="admin-product-name">' + o.total.toLocaleString('ru-RU') + ' ₽</span></div>').join('');
+        }
+
+        function loadAdminProducts() {
+            const products = JSON.parse(localStorage.getItem('zmr_products') || '[]');
+            const el = document.getElementById('adminProductsList');
+            if (products.length === 0) {
+                el.innerHTML = '<p class="profile-empty">Товаров пока нет</p>';
+                return;
+            }
+            el.innerHTML = products.map((p, i) => '<div class="admin-product-card"><div class="admin-product-info"><div class="admin-product-name">' + p.name + '</div><div class="admin-product-meta">' + p.collection + ' — ' + p.price + ' ₽</div></div><button class="admin-product-delete" data-index="' + i + '">Удалить</button></div>').join('');
+            el.querySelectorAll('.admin-product-delete').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    products.splice(parseInt(btn.dataset.index), 1);
+                    localStorage.setItem('zmr_products', JSON.stringify(products));
+                    loadAdminProducts();
+                });
+            });
+        }
+
+        function loadAdminUsers() {
+            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+            const el = document.getElementById('adminUsersList');
+            const keys = Object.keys(users);
+            if (keys.length === 0) {
+                el.innerHTML = '<p class="profile-empty">Пользователей пока нет</p>';
+                return;
+            }
+            el.innerHTML = keys.map(email => {
+                const u = users[email];
+                const ordersCount = u.orders ? u.orders.length : 0;
+                const badge = email === ADMIN_EMAIL ? ' <span class="admin-badge">АДМИН</span>' : '';
+                return '<div class="admin-user-card"><div class="admin-user-name">' + u.name + badge + '</div><div class="admin-user-meta">' + u.email + ' · ' + u.phone + ' · ' + ordersCount + ' заказов</div></div>';
+            }).join('');
+        }
+
+        document.getElementById('adminAddProduct').addEventListener('click', () => {
+            const collection = document.getElementById('adminProductCollection').value;
+            const name = document.getElementById('adminProductName').value.trim();
+            const price = document.getElementById('adminProductPrice').value.trim();
+            const desc = document.getElementById('adminProductDesc').value.trim();
+            const imgFront = document.getElementById('adminProductImgFront').value.trim();
+            const imgBack = document.getElementById('adminProductImgBack').value.trim();
+            if (!name || !price) return;
+            const products = JSON.parse(localStorage.getItem('zmr_products') || '[]');
+            products.push({ collection, name, price: parseInt(price), desc, imgFront, imgBack });
+            localStorage.setItem('zmr_products', JSON.stringify(products));
+            document.getElementById('adminProductName').value = '';
+            document.getElementById('adminProductPrice').value = '';
+            document.getElementById('adminProductDesc').value = '';
+            document.getElementById('adminProductImgFront').value = '';
+            document.getElementById('adminProductImgBack').value = '';
+            loadAdminProducts();
+        });
+
         profileBtn.addEventListener('click', () => { currentUser ? openProfile() : openLogin(); });
         document.getElementById('loginClose').addEventListener('click', closeAllAuth);
         document.getElementById('registerClose').addEventListener('click', closeAllAuth);
         document.getElementById('profileClose').addEventListener('click', closeAllAuth);
+        document.getElementById('adminClose').addEventListener('click', closeAllAuth);
         authOverlay.addEventListener('click', closeAllAuth);
         document.getElementById('goToRegister').addEventListener('click', (e) => { e.preventDefault(); openRegister(); });
         document.getElementById('goToLogin').addEventListener('click', (e) => { e.preventDefault(); openLogin(); });
@@ -2637,6 +2928,18 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
+                const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+                if (!users[ADMIN_EMAIL]) {
+                    users[ADMIN_EMAIL] = { name: 'Администратор', email: ADMIN_EMAIL, phone: '—', password: ADMIN_PASS, orders: [] };
+                    localStorage.setItem('zmr_users', JSON.stringify(users));
+                }
+                currentUser = ADMIN_EMAIL;
+                localStorage.setItem('zmr_current', ADMIN_EMAIL);
+                closeAllAuth();
+                updateProfileBtn();
+                return;
+            }
             const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
             if (users[email] && users[email].password === password) {
                 currentUser = email;
