@@ -822,7 +822,6 @@
         }
 
         .collection-card-main {
-            height: 700px;
             background: var(--bg-secondary);
             display: none;
         }
@@ -833,10 +832,8 @@
 
         .collection-card-main img {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
+            display: block;
             image-rendering: auto;
-            -webkit-font-smoothing: antialiased;
         }
 
         .collection-card-thumbs {
@@ -1310,10 +1307,6 @@
         @media (max-width: 1024px) {
             .collection-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .collection-card-main {
-                height: 500px;
             }
 
             .hero-visual {
