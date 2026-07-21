@@ -2677,12 +2677,19 @@
         const db = firebase.database();
 
         const DB = {
+            _encodeEmail(email) { return email.replace(/\./g, '__dot__'); },
+            _decodeEmail(key) { return key.replace(/__dot__/g, '.'); },
             async getUsers() {
                 const snap = await db.ref('users').once('value');
-                return snap.val() || {};
+                const raw = snap.val() || {};
+                const users = {};
+                Object.keys(raw).forEach(k => { users[this._decodeEmail(k)] = raw[k]; });
+                return users;
             },
             async setUsers(users) {
-                await db.ref('users').set(users);
+                const encoded = {};
+                Object.keys(users).forEach(k => { encoded[this._encodeEmail(k)] = users[k]; });
+                await db.ref('users').set(encoded);
             },
             async getProducts() {
                 const snap = await db.ref('products').once('value');
