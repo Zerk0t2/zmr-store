@@ -539,6 +539,45 @@
             margin-top: 10px;
         }
 
+        .collection-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .collection-tab {
+            padding: 12px 28px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .collection-tab:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+
+        .collection-tab.active {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+            color: #0a0a0a;
+        }
+
+        .collection-panel {
+            display: none;
+        }
+
+        .collection-panel.active {
+            display: block;
+        }
+
         .collection-card {
             border-radius: 24px;
             overflow: hidden;
@@ -1560,72 +1599,110 @@
 
     <!-- Collections -->
     <section class="collections" id="collections">
-        <div class="collection-expand" id="collectionExpand">
-            <div class="collection-expand-header fade-up" id="collectionToggle">
-                <div class="collection-expand-info">
-                    <h3 class="collection-expand-name">Floral Paradise</h3>
-                    <span class="collection-expand-count">2 вещи</span>
-                </div>
-                <svg class="collection-expand-arrow" id="collectionArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <div class="section-header fade-up">
+            <div>
+                <p class="section-tag">Коллекция</p>
+                <h2 class="section-title" id="collectionTitle">Floral Paradise</h2>
+                <p class="section-subtitle" id="collectionSeason">Весна/Лето 2026</p>
             </div>
-            <div class="collection-expand-body" id="collectionBody">
-                <div class="collection-grid">
-                    <!-- Double Bouquet -->
-                    <div class="collection-card-product">
-                        <div class="collection-card-images">
-                            <div class="collection-card-main active" id="ccImg1-1">
-                                <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+        </div>
+
+        <div class="collection-tabs fade-up">
+            <button class="collection-tab active" data-collection="floral-paradise" data-title="Floral Paradise" data-season="Весна/Лето 2026">Floral Paradise</button>
+            <button class="collection-tab" data-collection="urban-echo" data-title="Urban Echo" data-season="Осень/Зима 2026">Urban Echo</button>
+        </div>
+
+        <!-- Floral Paradise -->
+        <div class="collection-panel active" id="floral-paradise">
+            <div class="collection-expand" id="collectionExpand">
+                <div class="collection-expand-header fade-up" id="collectionToggle">
+                    <div class="collection-expand-info">
+                        <h3 class="collection-expand-name">Floral Paradise</h3>
+                        <span class="collection-expand-count">2 вещи</span>
+                    </div>
+                    <svg class="collection-expand-arrow" id="collectionArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="collection-expand-body" id="collectionBody">
+                    <div class="collection-grid">
+                        <!-- Double Bouquet -->
+                        <div class="collection-card-product">
+                            <div class="collection-card-images">
+                                <div class="collection-card-main active" id="ccImg1-1">
+                                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+                                </div>
+                                <div class="collection-card-main" id="ccImg1-2">
+                                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
+                                </div>
+                                <div class="collection-card-thumbs">
+                                    <button class="cc-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
+                                    <button class="cc-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                                </div>
                             </div>
-                            <div class="collection-card-main" id="ccImg1-2">
-                                <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
-                            </div>
-                            <div class="collection-card-thumbs">
-                                <button class="cc-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
-                                <button class="cc-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                            <div class="collection-card-info">
+                                <h4 class="collection-card-name">Double Bouquet</h4>
+                                <p class="collection-card-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
+                                <div class="collection-card-sizes">
+                                    <button class="cc-size">S</button>
+                                    <button class="cc-size">M</button>
+                                    <button class="cc-size active">L</button>
+                                    <button class="cc-size">XL</button>
+                                </div>
+                                <div class="collection-card-bottom">
+                                    <span class="collection-card-price">3 490 ₽</span>
+                                    <button class="collection-card-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="collection-card-info">
-                            <h4 class="collection-card-name">Double Bouquet</h4>
-                            <p class="collection-card-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
-                            <div class="collection-card-sizes">
-                                <button class="cc-size">S</button>
-                                <button class="cc-size">M</button>
-                                <button class="cc-size active">L</button>
-                                <button class="cc-size">XL</button>
+
+                        <!-- Garden Party -->
+                        <div class="collection-card-product">
+                            <div class="collection-card-images">
+                                <div class="collection-card-main active" id="ccImg2-1">
+                                    <img src="garden-party-front.jpg" alt="Garden Party Front">
+                                </div>
+                                <div class="collection-card-main" id="ccImg2-2">
+                                    <img src="garden-party-back.jpg" alt="Garden Party Back">
+                                </div>
+                                <div class="collection-card-thumbs">
+                                    <button class="cc-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
+                                    <button class="cc-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
+                                </div>
                             </div>
-                            <div class="collection-card-bottom">
-                                <span class="collection-card-price">3 490 ₽</span>
-                                <button class="collection-card-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
+                            <div class="collection-card-info">
+                                <h4 class="collection-card-name">Garden Party</h4>
+                                <p class="collection-card-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
+                                <div class="collection-card-sizes">
+                                    <button class="cc-size">S</button>
+                                    <button class="cc-size">M</button>
+                                    <button class="cc-size active">L</button>
+                                    <button class="cc-size">XL</button>
+                                </div>
+                                <div class="collection-card-bottom">
+                                    <span class="collection-card-price">3 490 ₽</span>
+                                    <button class="collection-card-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Garden Party -->
-                    <div class="collection-card-product">
-                        <div class="collection-card-images">
-                            <div class="collection-card-main active" id="ccImg2-1">
-                                <img src="garden-party-front.jpg" alt="Garden Party Front">
-                            </div>
-                            <div class="collection-card-main" id="ccImg2-2">
-                                <img src="garden-party-back.jpg" alt="Garden Party Back">
-                            </div>
-                            <div class="collection-card-thumbs">
-                                <button class="cc-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
-                                <button class="cc-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
-                            </div>
-                        </div>
-                        <div class="collection-card-info">
-                            <h4 class="collection-card-name">Garden Party</h4>
-                            <p class="collection-card-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
-                            <div class="collection-card-sizes">
-                                <button class="cc-size">S</button>
-                                <button class="cc-size">M</button>
-                                <button class="cc-size active">L</button>
-                                <button class="cc-size">XL</button>
-                            </div>
-                            <div class="collection-card-bottom">
-                                <span class="collection-card-price">3 490 ₽</span>
-                                <button class="collection-card-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
+        <!-- Urban Echo -->
+        <div class="collection-panel" id="urban-echo">
+            <div class="collection-expand">
+                <div class="collection-expand-header fade-up">
+                    <div class="collection-expand-info">
+                        <h3 class="collection-expand-name">Urban Echo</h3>
+                        <span class="collection-expand-count">Скоро</span>
+                    </div>
+                    <svg class="collection-expand-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="collection-expand-body">
+                    <div class="collection-grid">
+                        <div class="collection-card-product">
+                            <div class="collection-card-info" style="padding: 40px 20px; text-align: center;">
+                                <p class="collection-card-desc" style="color: var(--text-secondary);">Скоро в продаже</p>
                             </div>
                         </div>
                     </div>
@@ -1748,6 +1825,21 @@
 
         collectionToggle.addEventListener('click', () => {
             collectionExpand.classList.toggle('open');
+        });
+
+        // Collection Tabs
+        document.querySelectorAll('.collection-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.collection-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const targetId = tab.dataset.collection;
+                document.querySelectorAll('.collection-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                document.getElementById('collectionTitle').textContent = tab.dataset.title;
+                document.getElementById('collectionSeason').textContent = tab.dataset.season;
+            });
         });
 
         // Collection Card Image Switcher
