@@ -524,6 +524,213 @@
             color: var(--text-primary);
         }
 
+        /* New Drop */
+        .new-drop {
+            padding: 120px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .new-drop-badge {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .new-drop-badge-text {
+            display: inline-block;
+            padding: 10px 30px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--accent-3);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .new-drop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .new-drop-images {
+            position: relative;
+        }
+
+        .new-drop-img {
+            display: none;
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .new-drop-img.active {
+            display: block;
+        }
+
+        .new-drop-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .new-drop-thumbs {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .new-drop-thumb {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+            padding: 0;
+        }
+
+        .new-drop-thumb.active {
+            border-color: var(--accent-1);
+        }
+
+        .new-drop-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .new-drop-info {
+            padding: 20px 0;
+        }
+
+        .new-drop-collection {
+            font-size: 0.8rem;
+            color: var(--accent-3);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .new-drop-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .new-drop-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 35px;
+            max-width: 450px;
+        }
+
+        .new-drop-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .new-drop-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .detail-value {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .new-drop-sizes {
+            margin-bottom: 35px;
+        }
+
+        .new-drop-sizes .detail-label {
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .new-drop-sizes-list {
+            display: flex;
+            gap: 10px;
+        }
+
+        .new-drop-size {
+            width: 45px;
+            height: 45px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .new-drop-size:hover {
+            border-color: var(--accent-1);
+            color: var(--accent-1);
+        }
+
+        .new-drop-size.active {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+            color: #0a0a0a;
+        }
+
+        .new-drop-bottom {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .new-drop-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .new-drop-buy {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            color: #0a0a0a;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .new-drop-buy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+        }
+
         /* Collections */
         .collections {
             padding: 120px 60px;
@@ -900,6 +1107,15 @@
         }
 
         @media (max-width: 1024px) {
+            .new-drop-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .new-drop-name {
+                font-size: 2.5rem;
+            }
+
             .collections-grid {
                 grid-template-columns: 1fr;
             }
@@ -966,7 +1182,7 @@
                 gap: 30px;
             }
             
-            .catalog, .categories, .features, .collections {
+            .catalog, .categories, .features, .collections, .new-drop {
                 padding: 80px 25px;
             }
 
@@ -1132,6 +1348,59 @@
         </div>
     </section>
 
+    <!-- New Drop -->
+    <section class="new-drop">
+        <div class="new-drop-badge fade-up">
+            <span class="new-drop-badge-text">New Drop</span>
+        </div>
+        <div class="new-drop-grid">
+            <div class="new-drop-images fade-up">
+                <div class="new-drop-img active" id="dropImg1">
+                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+                </div>
+                <div class="new-drop-img" id="dropImg2">
+                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
+                </div>
+                <div class="new-drop-thumbs">
+                    <button class="new-drop-thumb active" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
+                    <button class="new-drop-thumb" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                </div>
+            </div>
+            <div class="new-drop-info fade-up">
+                <p class="new-drop-collection">Floral Paradise</p>
+                <h2 class="new-drop-name">Double Bouquet</h2>
+                <p class="new-drop-desc">Чёрная оверсайз футболка из плотного хлопка с принтом двойного цветочного букета. Рисунок нанесён методом шелкографии — не выцветает после стирки.</p>
+                <div class="new-drop-details">
+                    <div class="new-drop-detail">
+                        <span class="detail-label">Материал</span>
+                        <span class="detail-value">100% хлопок, 220г/м²</span>
+                    </div>
+                    <div class="new-drop-detail">
+                        <span class="detail-label">Крой</span>
+                        <span class="detail-value">Оверсайз</span>
+                    </div>
+                    <div class="new-drop-detail">
+                        <span class="detail-label">Принт</span>
+                        <span class="detail-value">Шелкография</span>
+                    </div>
+                </div>
+                <div class="new-drop-sizes">
+                    <span class="detail-label">Размер</span>
+                    <div class="new-drop-sizes-list">
+                        <button class="new-drop-size">S</button>
+                        <button class="new-drop-size">M</button>
+                        <button class="new-drop-size active">L</button>
+                        <button class="new-drop-size">XL</button>
+                    </div>
+                </div>
+                <div class="new-drop-bottom">
+                    <span class="new-drop-price">3 490 ₽</span>
+                    <button class="new-drop-buy">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Collections -->
     <section class="collections" id="collections">
         <div class="section-header fade-up">
@@ -1292,6 +1561,27 @@
         }, observerOptions);
 
         fadeElements.forEach(el => observer.observe(el));
+
+        // New Drop Image Switcher
+        const dropThumbs = document.querySelectorAll('.new-drop-thumb');
+        const dropImgs = document.querySelectorAll('.new-drop-img');
+
+        dropThumbs.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                dropThumbs.forEach(t => t.classList.remove('active'));
+                dropImgs.forEach(i => i.classList.remove('active'));
+                thumb.classList.add('active');
+                document.getElementById('dropImg' + thumb.dataset.img).classList.add('active');
+            });
+        });
+
+        // Size Selection
+        document.querySelectorAll('.new-drop-size').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.new-drop-size').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
