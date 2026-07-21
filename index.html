@@ -1795,6 +1795,76 @@
             display: block;
         }
 
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-card-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .stats-bar-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .stats-bar-track {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stats-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .stats-bar-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            width: 30px;
+            text-align: right;
+        }
+
         .admin-add-form {
             margin-bottom: 25px;
             padding-bottom: 25px;
@@ -2473,9 +2543,15 @@
         </div>
         <div class="admin-body">
             <div class="admin-tabs">
-                <button class="admin-tab active" data-tab="orders">Заказы</button>
+                <button class="admin-tab active" data-tab="stats">Статистика</button>
+                <button class="admin-tab" data-tab="orders">Заказы</button>
                 <button class="admin-tab" data-tab="products">Товары</button>
                 <button class="admin-tab" data-tab="users">Пользователи</button>
+            </div>
+
+            <!-- Stats Tab -->
+            <div class="admin-panel active" id="adminStats">
+                <div class="stats-grid" id="statsGrid"></div>
             </div>
 
             <!-- Orders Tab -->
@@ -3122,9 +3198,7 @@
 
         function openAdmin() {
             closeAllAuth(); openOverlay(); adminModal.classList.add('open');
-            loadAdminOrders();
-            loadAdminProducts();
-            loadAdminUsers();
+            loadAdminStats();
         }
 
         // Admin Tabs
@@ -3133,9 +3207,43 @@
                 document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById('admin' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)).classList.add('active');
+                const tabName = tab.dataset.tab;
+                const panelMap = { stats: 'adminStats', orders: 'adminOrders', products: 'adminProducts', users: 'adminUsers' };
+                document.getElementById(panelMap[tabName]).classList.add('active');
+                if (tabName === 'stats') loadAdminStats();
+                else if (tabName === 'orders') loadAdminOrders();
+                else if (tabName === 'products') loadAdminProducts();
+                else if (tabName === 'users') loadAdminUsers();
             });
         });
+
+        async function loadAdminStats() {
+            const orders = await DB.getOrders();
+            const users = await DB.getUsers();
+            const products = await DB.getProducts();
+            const totalRevenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+            const newOrders = orders.filter(o => (o.status || 'new') === 'new').length;
+            const processingOrders = orders.filter(o => o.status === 'processing').length;
+            const completedOrders = orders.filter(o => o.status === 'completed').length;
+            const cancelledOrders = orders.filter(o => o.status === 'cancelled').length;
+            const totalUsers = Object.keys(users).length;
+            const statusColors = { new: '#ccaa00', processing: '#4499ff', completed: '#66cc66', cancelled: '#ff4444' };
+            const maxStatus = Math.max(newOrders, processingOrders, completedOrders, cancelledOrders, 1);
+
+            const grid = document.getElementById('statsGrid');
+            grid.innerHTML =
+                '<div class="stat-card"><div class="stat-card-value">' + orders.length + '</div><div class="stat-card-label">Всего заказов</div></div>' +
+                '<div class="stat-card"><div class="stat-card-value">' + totalRevenue.toLocaleString('ru-RU') + ' ₽</div><div class="stat-card-label">Выручка</div></div>' +
+                '<div class="stat-card"><div class="stat-card-value">' + totalUsers + '</div><div class="stat-card-label">Пользователей</div></div>' +
+                '<div class="stat-card"><div class="stat-card-value">' + products.length + '</div><div class="stat-card-label">Товаров</div></div>' +
+                '<div class="stats-section-title" style="grid-column:1/-1;margin-top:10px">Статусы заказов</div>' +
+                '<div style="grid-column:1/-1">' +
+                '<div class="stats-bar"><span class="stats-bar-label">Новый</span><div class="stats-bar-track"><div class="stats-bar-fill" style="width:' + (newOrders / maxStatus * 100) + '%;background:' + statusColors.new + '"></div></div><span class="stats-bar-count" style="color:' + statusColors.new + '">' + newOrders + '</span></div>' +
+                '<div class="stats-bar"><span class="stats-bar-label">В обработке</span><div class="stats-bar-track"><div class="stats-bar-fill" style="width:' + (processingOrders / maxStatus * 100) + '%;background:' + statusColors.processing + '"></div></div><span class="stats-bar-count" style="color:' + statusColors.processing + '">' + processingOrders + '</span></div>' +
+                '<div class="stats-bar"><span class="stats-bar-label">Выполнен</span><div class="stats-bar-track"><div class="stats-bar-fill" style="width:' + (completedOrders / maxStatus * 100) + '%;background:' + statusColors.completed + '"></div></div><span class="stats-bar-count" style="color:' + statusColors.completed + '">' + completedOrders + '</span></div>' +
+                '<div class="stats-bar"><span class="stats-bar-label">Отменён</span><div class="stats-bar-track"><div class="stats-bar-fill" style="width:' + (cancelledOrders / maxStatus * 100) + '%;background:' + statusColors.cancelled + '"></div></div><span class="stats-bar-count" style="color:' + statusColors.cancelled + '">' + cancelledOrders + '</span></div>' +
+                '</div>';
+        }
 
         async function loadAdminOrders() {
             const orders = await DB.getOrders();
