@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Z&M&R — Мода нового поколения</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -2661,107 +2663,40 @@
     </footer>
 
     <script>
-        // JSONBin Config
-        const JSONBIN_KEY = '$2a$10$HfenGQ5gvAVcAmt3Xw86n.snD68P5S/LdqmKwbQxEB45QSFIKIk2K';
-        const JSONBIN_API = 'https://api.jsonbin.io/v3';
-
-        const binIds = JSON.parse(localStorage.getItem('zmr_binIds') || '{}');
-        let USE_CLOUD = true;
-
-        async function jsonbinGet(binId) {
-            try {
-                const res = await fetch(JSONBIN_API + '/b/' + binId, {
-                    headers: { 'X-Access-Key': JSONBIN_KEY }
-                });
-                if (!res.ok) { USE_CLOUD = false; return null; }
-                const data = await res.json();
-                return data.record;
-            } catch(e) { USE_CLOUD = false; return null; }
-        }
-
-        async function jsonbinCreate(data) {
-            try {
-                const res = await fetch(JSONBIN_API + '/bins', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
-                    body: JSON.stringify(data)
-                });
-                if (!res.ok) { USE_CLOUD = false; return null; }
-                const result = await res.json();
-                return result.metadata.id;
-            } catch(e) { USE_CLOUD = false; return null; }
-        }
-
-        async function jsonbinUpdate(binId, data) {
-            try {
-                await fetch(JSONBIN_API + '/bin/' + binId, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
-                    body: JSON.stringify(data)
-                });
-            } catch(e) { USE_CLOUD = false; }
-        }
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAvjSUcZ6KLSmZAZCUoYJil0PrGdghAvaE",
+            authDomain: "zmrshop-35285.firebaseapp.com",
+            databaseURL: "https://zmrshop-35285-default-rtdb.firebaseio.com",
+            projectId: "zmrshop-35285",
+            storageBucket: "zmrshop-35285.firebasestorage.app",
+            messagingSenderId: "272458655151",
+            appId: "1:272458655151:web:f63d2f1f70e05c243f7b5a"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
         const DB = {
             async getUsers() {
-                if (USE_CLOUD && binIds.users) {
-                    const data = await jsonbinGet(binIds.users);
-                    if (data) return data;
-                }
-                if (USE_CLOUD) {
-                    const id = await jsonbinCreate({});
-                    if (id) { binIds.users = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); return {}; }
-                }
-                return JSON.parse(localStorage.getItem('zmr_users_fallback') || '{}');
+                const snap = await db.ref('users').once('value');
+                return snap.val() || {};
             },
             async setUsers(users) {
-                localStorage.setItem('zmr_users_fallback', JSON.stringify(users));
-                if (USE_CLOUD && binIds.users) {
-                    await jsonbinUpdate(binIds.users, users);
-                } else if (USE_CLOUD) {
-                    const id = await jsonbinCreate(users);
-                    if (id) { binIds.users = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); }
-                }
+                await db.ref('users').set(users);
             },
             async getProducts() {
-                if (USE_CLOUD && binIds.products) {
-                    const data = await jsonbinGet(binIds.products);
-                    if (data) return data;
-                }
-                if (USE_CLOUD) {
-                    const id = await jsonbinCreate([]);
-                    if (id) { binIds.products = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); return []; }
-                }
-                return JSON.parse(localStorage.getItem('zmr_products_fallback') || '[]');
+                const snap = await db.ref('products').once('value');
+                return snap.val() || [];
             },
             async setProducts(products) {
-                localStorage.setItem('zmr_products_fallback', JSON.stringify(products));
-                if (USE_CLOUD && binIds.products) {
-                    await jsonbinUpdate(binIds.products, products);
-                } else if (USE_CLOUD) {
-                    const id = await jsonbinCreate(products);
-                    if (id) { binIds.products = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); }
-                }
+                await db.ref('products').set(products);
             },
             async getOrders() {
-                if (USE_CLOUD && binIds.orders) {
-                    const data = await jsonbinGet(binIds.orders);
-                    if (data) return data;
-                }
-                if (USE_CLOUD) {
-                    const id = await jsonbinCreate([]);
-                    if (id) { binIds.orders = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); return []; }
-                }
-                return JSON.parse(localStorage.getItem('zmr_orders_fallback') || '[]');
+                const snap = await db.ref('orders').once('value');
+                return snap.val() || [];
             },
             async setOrders(orders) {
-                localStorage.setItem('zmr_orders_fallback', JSON.stringify(orders));
-                if (USE_CLOUD && binIds.orders) {
-                    await jsonbinUpdate(binIds.orders, orders);
-                } else if (USE_CLOUD) {
-                    const id = await jsonbinCreate(orders);
-                    if (id) { binIds.orders = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); }
-                }
+                await db.ref('orders').set(orders);
             },
             getCurrentUser() { return localStorage.getItem('zmr_current') || null; },
             setCurrentUser(email) { localStorage.setItem('zmr_current', email); },
