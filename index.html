@@ -1703,10 +1703,14 @@
         .profile-order-status {
             font-size: 0.75rem;
             padding: 3px 10px;
-            background: rgba(100, 200, 100, 0.15);
-            color: #66cc66;
             border-radius: 10px;
         }
+
+        .profile-order[data-status="new"] .profile-order-status,
+        .profile-order-status { background: rgba(204, 170, 0, 0.15); color: #ccaa00; }
+        .profile-order[data-status="processing"] .profile-order-status { background: rgba(68, 153, 255, 0.15); color: #4499ff; }
+        .profile-order[data-status="completed"] .profile-order-status { background: rgba(102, 204, 102, 0.15); color: #66cc66; }
+        .profile-order[data-status="cancelled"] .profile-order-status { background: rgba(255, 68, 68, 0.15); color: #ff4444; }
 
         .profile-order-items {
             font-size: 0.85rem;
@@ -1856,6 +1860,16 @@
         .admin-user-meta {
             font-size: 0.8rem;
             color: var(--text-secondary);
+        }
+
+        .admin-status-select {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .admin-status-select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .admin-badge {
@@ -2642,6 +2656,106 @@
     </footer>
 
     <script>
+        // JSONBin Config
+        const JSONBIN_KEY = '$2a$10$HfenGQ5gvAVcAmt3Xw86n.snD68P5S/LdqmKwbQxEB45QSFIKIk2K';
+        const JSONBIN_API = 'https://api.jsonbin.io/v3';
+
+        const binIds = JSON.parse(localStorage.getItem('zmr_binIds') || '{}');
+
+        async function jsonbinGet(binId) {
+            try {
+                const res = await fetch(JSONBIN_API + '/b/' + binId, {
+                    headers: { 'X-Access-Key': JSONBIN_KEY }
+                });
+                if (!res.ok) return null;
+                const data = await res.json();
+                return data.record;
+            } catch { return null; }
+        }
+
+        async function jsonbinCreate(data) {
+            const res = await fetch(JSONBIN_API + '/bins', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            return result.metadata.id;
+        }
+
+        async function jsonbinUpdate(binId, data) {
+            await fetch(JSONBIN_API + '/bin/' + binId, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
+                body: JSON.stringify(data)
+            });
+        }
+
+        const DB = {
+            async getUsers() {
+                if (binIds.users) {
+                    const data = await jsonbinGet(binIds.users);
+                    if (data) return data;
+                }
+                const defaultData = {};
+                const id = await jsonbinCreate(defaultData);
+                binIds.users = id;
+                localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                return defaultData;
+            },
+            async setUsers(users) {
+                if (binIds.users) {
+                    await jsonbinUpdate(binIds.users, users);
+                } else {
+                    const id = await jsonbinCreate(users);
+                    binIds.users = id;
+                    localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                }
+            },
+            async getProducts() {
+                if (binIds.products) {
+                    const data = await jsonbinGet(binIds.products);
+                    if (data) return data;
+                }
+                const defaultData = [];
+                const id = await jsonbinCreate(defaultData);
+                binIds.products = id;
+                localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                return defaultData;
+            },
+            async setProducts(products) {
+                if (binIds.products) {
+                    await jsonbinUpdate(binIds.products, products);
+                } else {
+                    const id = await jsonbinCreate(products);
+                    binIds.products = id;
+                    localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                }
+            },
+            async getOrders() {
+                if (binIds.orders) {
+                    const data = await jsonbinGet(binIds.orders);
+                    if (data) return data;
+                }
+                const defaultData = [];
+                const id = await jsonbinCreate(defaultData);
+                binIds.orders = id;
+                localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                return defaultData;
+            },
+            async setOrders(orders) {
+                if (binIds.orders) {
+                    await jsonbinUpdate(binIds.orders, orders);
+                } else {
+                    const id = await jsonbinCreate(orders);
+                    binIds.orders = id;
+                    localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                }
+            },
+            getCurrentUser() { return localStorage.getItem('zmr_current') || null; },
+            setCurrentUser(email) { localStorage.setItem('zmr_current', email); },
+            clearCurrentUser() { localStorage.removeItem('zmr_current'); }
+        };
         // Cursor Glow Effect
         const cursorGlow = document.getElementById('cursorGlow');
         
@@ -2883,7 +2997,7 @@
         successClose.addEventListener('click', closeSuccess);
         successOverlay.addEventListener('click', closeSuccess);
 
-        checkoutForm.addEventListener('submit', (e) => {
+        checkoutForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) {
                 closeCheckout();
@@ -2891,14 +3005,16 @@
                 return;
             }
             const order = {
+                id: Date.now(),
+                userId: currentUser,
                 date: new Date().toLocaleDateString('ru-RU'),
                 items: cart.map(i => i.name + ' (' + i.size + ')'),
-                total: cart.reduce((s, i) => s + i.price, 0)
+                total: cart.reduce((s, i) => s + i.price, 0),
+                status: 'new'
             };
-            let users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
-            if (!users[currentUser].orders) users[currentUser].orders = [];
-            users[currentUser].orders.push(order);
-            localStorage.setItem('zmr_users', JSON.stringify(users));
+            const orders = await DB.getOrders();
+            orders.push(order);
+            await DB.setOrders(orders);
             openSuccess();
         });
 
@@ -2920,18 +3036,21 @@
         function openLogin() { closeAllAuth(); openOverlay(); loginModal.classList.add('open'); document.getElementById('loginError').textContent = ''; }
         function openRegister() { closeAllAuth(); openOverlay(); registerModal.classList.add('open'); document.getElementById('registerError').textContent = ''; }
 
-        function openProfile() {
+        async function openProfile() {
             closeAllAuth(); openOverlay(); profileModal.classList.add('open');
-            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+            const users = await DB.getUsers();
             const user = users[currentUser];
             if (!user) return;
             document.getElementById('profileAvatar').textContent = user.name.charAt(0).toUpperCase();
-            document.getElementById('profileName').textContent = user.name + (isAdmin() ? ' <span class="admin-badge">АДМИН</span>' : '');
+            document.getElementById('profileName').innerHTML = user.name + (isAdmin() ? ' <span class="admin-badge">АДМИН</span>' : '');
             document.getElementById('profileEmail').textContent = user.email;
             document.getElementById('profilePhone').textContent = user.phone;
             const ordersEl = document.getElementById('profileOrders');
-            if (user.orders && user.orders.length > 0) {
-                ordersEl.innerHTML = user.orders.map(o => '<div class="profile-order"><div class="profile-order-top"><span class="profile-order-date">' + o.date + '</span><span class="profile-order-status">Выполнен</span></div><p class="profile-order-items">' + o.items.join(', ') + '</p><p class="profile-order-total">' + o.total.toLocaleString('ru-RU') + ' ₽</p></div>').reverse().join('');
+            const orders = await DB.getOrders();
+            const myOrders = orders.filter(o => o.userId === currentUser);
+            if (myOrders.length > 0) {
+                const statusMap = { new: 'Новый', processing: 'В обработке', completed: 'Выполнен', cancelled: 'Отменён' };
+                ordersEl.innerHTML = myOrders.reverse().map(o => '<div class="profile-order"><div class="profile-order-top"><span class="profile-order-date">' + o.date + '</span><span class="profile-order-status">' + (statusMap[o.status] || 'Новый') + '</span></div><p class="profile-order-items">' + o.items.join(', ') + '</p><p class="profile-order-total">' + o.total.toLocaleString('ru-RU') + ' ₽</p></div>').join('');
             } else {
                 ordersEl.innerHTML = '<p class="profile-empty">Заказов пока нет</p>';
             }
@@ -2975,26 +3094,34 @@
             });
         });
 
-        function loadAdminOrders() {
-            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
-            let allOrders = [];
-            Object.keys(users).forEach(email => {
-                if (users[email].orders) {
-                    users[email].orders.forEach(o => {
-                        allOrders.push({ ...o, user: users[email].name, email });
-                    });
-                }
-            });
+        async function loadAdminOrders() {
+            const orders = await DB.getOrders();
+            const users = await DB.getUsers();
             const el = document.getElementById('adminOrdersList');
-            if (allOrders.length === 0) {
+            if (orders.length === 0) {
                 el.innerHTML = '<p class="profile-empty">Заказов пока нет</p>';
                 return;
             }
-            el.innerHTML = allOrders.reverse().map(o => '<div class="admin-product-card"><div class="admin-product-info"><div class="admin-product-name">' + o.user + ' <span style="color:var(--text-secondary);font-weight:400;font-size:0.8rem">(' + o.email + ')</span></div><div class="admin-product-meta">' + o.date + ' — ' + o.items.join(', ') + '</div></div><span class="admin-product-name">' + o.total.toLocaleString('ru-RU') + ' ₽</span></div>').join('');
+            const statusMap = { new: 'Новый', processing: 'В обработке', completed: 'Выполнен', cancelled: 'Отменён' };
+            const statusColors = { new: '#ccaa00', processing: '#4499ff', completed: '#66cc66', cancelled: '#ff4444' };
+            el.innerHTML = orders.reverse().map(o => {
+                const u = users[o.userId] || {};
+                const st = o.status || 'new';
+                return '<div class="admin-product-card"><div class="admin-product-info"><div class="admin-product-name">' + (u.name || o.userId) + ' <span style="color:var(--text-secondary);font-weight:400;font-size:0.8rem">(' + o.userId + ')</span></div><div class="admin-product-meta">' + o.date + ' — ' + o.items.join(', ') + '</div></div><div style="display:flex;align-items:center;gap:10px"><span class="admin-product-name">' + o.total.toLocaleString('ru-RU') + ' ₽</span><select class="admin-status-select" data-id="' + o.id + '" style="padding:5px 10px;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:' + statusColors[st] + ';font-size:0.8rem;font-family:Inter,sans-serif;cursor:pointer"><option value="new"' + (st === 'new' ? ' selected' : '') + '>Новый</option><option value="processing"' + (st === 'processing' ? ' selected' : '') + '>В обработке</option><option value="completed"' + (st === 'completed' ? ' selected' : '') + '>Выполнен</option><option value="cancelled"' + (st === 'cancelled' ? ' selected' : '') + '>Отменён</option></select></div></div>';
+            }).join('');
+            el.querySelectorAll('.admin-status-select').forEach(sel => {
+                sel.addEventListener('change', async () => {
+                    const id = parseInt(sel.dataset.id);
+                    const allOrders = await DB.getOrders();
+                    const order = allOrders.find(o => o.id === id);
+                    if (order) { order.status = sel.value; await DB.setOrders(allOrders); }
+                    loadAdminOrders();
+                });
+            });
         }
 
-        function loadAdminProducts() {
-            const products = JSON.parse(localStorage.getItem('zmr_products') || '[]');
+        async function loadAdminProducts() {
+            const products = await DB.getProducts();
             const el = document.getElementById('adminProductsList');
             if (products.length === 0) {
                 el.innerHTML = '<p class="profile-empty">Товаров пока нет</p>';
@@ -3002,16 +3129,18 @@
             }
             el.innerHTML = products.map((p, i) => '<div class="admin-product-card"><div class="admin-product-info"><div class="admin-product-name">' + p.name + '</div><div class="admin-product-meta">' + p.collection + ' — ' + p.price + ' ₽</div></div><button class="admin-product-delete" data-index="' + i + '">Удалить</button></div>').join('');
             el.querySelectorAll('.admin-product-delete').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    products.splice(parseInt(btn.dataset.index), 1);
-                    localStorage.setItem('zmr_products', JSON.stringify(products));
+                btn.addEventListener('click', async () => {
+                    const prods = await DB.getProducts();
+                    prods.splice(parseInt(btn.dataset.index), 1);
+                    await DB.setProducts(prods);
                     loadAdminProducts();
                 });
             });
         }
 
-        function loadAdminUsers() {
-            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+        async function loadAdminUsers() {
+            const users = await DB.getUsers();
+            const orders = await DB.getOrders();
             const el = document.getElementById('adminUsersList');
             const keys = Object.keys(users);
             if (keys.length === 0) {
@@ -3020,7 +3149,7 @@
             }
             el.innerHTML = keys.map(email => {
                 const u = users[email];
-                const ordersCount = u.orders ? u.orders.length : 0;
+                const ordersCount = orders.filter(o => o.userId === email).length;
                 const badge = email === ADMIN_EMAIL ? ' <span class="admin-badge">АДМИН</span>' : '';
                 return '<div class="admin-user-card"><div class="admin-user-name">' + u.name + badge + '</div><div class="admin-user-meta">' + u.email + ' · ' + u.phone + ' · ' + ordersCount + ' заказов</div></div>';
             }).join('');
@@ -3050,7 +3179,7 @@
             if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
         });
 
-        document.getElementById('adminAddProduct').addEventListener('click', () => {
+        document.getElementById('adminAddProduct').addEventListener('click', async () => {
             const collection = selectedCollection;
             const name = document.getElementById('adminProductName').value.trim();
             const price = document.getElementById('adminProductPrice').value.trim();
@@ -3058,9 +3187,9 @@
             const imgFront = document.getElementById('adminProductImgFront').value.trim();
             const imgBack = document.getElementById('adminProductImgBack').value.trim();
             if (!name || !price) return;
-            const products = JSON.parse(localStorage.getItem('zmr_products') || '[]');
+            const products = await DB.getProducts();
             products.push({ collection, name, price: parseInt(price), desc, imgFront, imgBack });
-            localStorage.setItem('zmr_products', JSON.stringify(products));
+            await DB.setProducts(products);
             document.getElementById('adminProductName').value = '';
             document.getElementById('adminProductPrice').value = '';
             document.getElementById('adminProductDesc').value = '';
@@ -3078,26 +3207,26 @@
         document.getElementById('goToRegister').addEventListener('click', (e) => { e.preventDefault(); openRegister(); });
         document.getElementById('goToLogin').addEventListener('click', (e) => { e.preventDefault(); openLogin(); });
 
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
-                const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+                const users = await DB.getUsers();
                 if (!users[ADMIN_EMAIL]) {
-                    users[ADMIN_EMAIL] = { name: 'Администратор', email: ADMIN_EMAIL, phone: '—', password: ADMIN_PASS, orders: [] };
-                    localStorage.setItem('zmr_users', JSON.stringify(users));
+                    users[ADMIN_EMAIL] = { name: 'Администратор', email: ADMIN_EMAIL, phone: '—', password: ADMIN_PASS };
+                    await DB.setUsers(users);
                 }
                 currentUser = ADMIN_EMAIL;
-                localStorage.setItem('zmr_current', ADMIN_EMAIL);
+                DB.setCurrentUser(ADMIN_EMAIL);
                 closeAllAuth();
                 updateProfileBtn();
                 return;
             }
-            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+            const users = await DB.getUsers();
             if (users[email] && users[email].password === password) {
                 currentUser = email;
-                localStorage.setItem('zmr_current', email);
+                DB.setCurrentUser(email);
                 closeAllAuth();
                 updateProfileBtn();
             } else {
@@ -3105,32 +3234,33 @@
             }
         });
 
-        document.getElementById('registerForm').addEventListener('submit', (e) => {
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
             const phone = document.getElementById('regPhone').value;
             const password = document.getElementById('regPassword').value;
-            const users = JSON.parse(localStorage.getItem('zmr_users') || '{}');
+            const users = await DB.getUsers();
             if (users[email]) {
                 document.getElementById('registerError').textContent = 'Аккаунт уже существует';
                 return;
             }
-            users[email] = { name, email, phone, password, orders: [] };
-            localStorage.setItem('zmr_users', JSON.stringify(users));
+            users[email] = { name, email, phone, password };
+            await DB.setUsers(users);
             currentUser = email;
-            localStorage.setItem('zmr_current', email);
+            DB.setCurrentUser(email);
             closeAllAuth();
             updateProfileBtn();
         });
 
         document.getElementById('profileLogout').addEventListener('click', () => {
             currentUser = null;
-            localStorage.removeItem('zmr_current');
+            DB.clearCurrentUser();
             closeAllAuth();
             updateProfileBtn();
         });
 
+        currentUser = DB.getCurrentUser();
         updateProfileBtn();
 
         // Size Selection for product
