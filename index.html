@@ -1279,9 +1279,82 @@
             gap: 100px;
         }
 
-        .collection-product {
+        /* Carousel */
+        .collection-carousel {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .carousel-viewport {
+            overflow: hidden;
+            flex: 1;
+            border-radius: 24px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 0 10px;
+        }
+
+        .carousel-arrow {
+            width: 50px;
+            height: 50px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            z-index: 5;
+        }
+
+        .carousel-arrow:hover {
+            background: var(--accent-1);
+            color: #0a0a0a;
+            border-color: var(--accent-1);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--glass-border);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: var(--accent-1);
+            transform: scale(1.3);
+        }
+
+            .collection-product {
                 grid-template-columns: 1fr;
                 gap: 50px;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
             }
 
             .collection-product-name {
@@ -1547,84 +1620,102 @@
             </div>
         </div>
 
-        <div class="collection-products">
-            <!-- Double Bouquet -->
-            <div class="collection-product fade-up">
-                <div class="collection-product-images">
-                    <div class="collection-product-main active" id="cpImg1-1">
-                        <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
-                    </div>
-                    <div class="collection-product-main" id="cpImg1-2" style="display:none">
-                        <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
-                    </div>
-                    <div class="collection-product-thumbs">
-                        <button class="cp-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
-                        <button class="cp-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
-                    </div>
-                </div>
-                <div class="collection-product-info">
-                    <h3 class="collection-product-name">Double Bouquet</h3>
-                    <p class="collection-product-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
-                    <div class="collection-product-details">
-                        <div class="cp-detail">
-                            <span class="cp-detail-label">Материал</span>
-                            <span class="cp-detail-value">Хлопок</span>
+        <div class="collection-carousel">
+            <button class="carousel-arrow carousel-prev" id="carouselPrev">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="carousel-viewport" id="carouselViewport">
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Double Bouquet -->
+                    <div class="carousel-slide">
+                        <div class="collection-product">
+                            <div class="collection-product-images">
+                                <div class="collection-product-main active" id="cpImg1-1">
+                                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+                                </div>
+                                <div class="collection-product-main" id="cpImg1-2" style="display:none">
+                                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
+                                </div>
+                                <div class="collection-product-thumbs">
+                                    <button class="cp-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
+                                    <button class="cp-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                                </div>
+                            </div>
+                            <div class="collection-product-info">
+                                <h3 class="collection-product-name">Double Bouquet</h3>
+                                <p class="collection-product-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
+                                <div class="collection-product-details">
+                                    <div class="cp-detail">
+                                        <span class="cp-detail-label">Материал</span>
+                                        <span class="cp-detail-value">Хлопок</span>
+                                    </div>
+                                </div>
+                                <div class="collection-product-sizes">
+                                    <span class="cp-detail-label">Размер</span>
+                                    <div class="cp-sizes-list">
+                                        <button class="cp-size">S</button>
+                                        <button class="cp-size">M</button>
+                                        <button class="cp-size active">L</button>
+                                        <button class="cp-size">XL</button>
+                                    </div>
+                                </div>
+                                <div class="collection-product-bottom">
+                                    <span class="collection-product-price">3 490 ₽</span>
+                                    <button class="collection-product-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="collection-product-sizes">
-                        <span class="cp-detail-label">Размер</span>
-                        <div class="cp-sizes-list">
-                            <button class="cp-size">S</button>
-                            <button class="cp-size">M</button>
-                            <button class="cp-size active">L</button>
-                            <button class="cp-size">XL</button>
-                        </div>
-                    </div>
-                    <div class="collection-product-bottom">
-                        <span class="collection-product-price">3 490 ₽</span>
-                        <button class="collection-product-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Garden Party -->
-            <div class="collection-product fade-up">
-                <div class="collection-product-images">
-                    <div class="collection-product-main active" id="cpImg2-1">
-                        <img src="garden-party-front.jpg" alt="Garden Party Front">
-                    </div>
-                    <div class="collection-product-main" id="cpImg2-2" style="display:none">
-                        <img src="garden-party-back.jpg" alt="Garden Party Back">
-                    </div>
-                    <div class="collection-product-thumbs">
-                        <button class="cp-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
-                        <button class="cp-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
-                    </div>
-                </div>
-                <div class="collection-product-info">
-                    <h3 class="collection-product-name">Garden Party</h3>
-                    <p class="collection-product-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
-                    <div class="collection-product-details">
-                        <div class="cp-detail">
-                            <span class="cp-detail-label">Материал</span>
-                            <span class="cp-detail-value">Хлопок</span>
+                    <!-- Garden Party -->
+                    <div class="carousel-slide">
+                        <div class="collection-product">
+                            <div class="collection-product-images">
+                                <div class="collection-product-main active" id="cpImg2-1">
+                                    <img src="garden-party-front.jpg" alt="Garden Party Front">
+                                </div>
+                                <div class="collection-product-main" id="cpImg2-2" style="display:none">
+                                    <img src="garden-party-back.jpg" alt="Garden Party Back">
+                                </div>
+                                <div class="collection-product-thumbs">
+                                    <button class="cp-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
+                                    <button class="cp-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
+                                </div>
+                            </div>
+                            <div class="collection-product-info">
+                                <h3 class="collection-product-name">Garden Party</h3>
+                                <p class="collection-product-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
+                                <div class="collection-product-details">
+                                    <div class="cp-detail">
+                                        <span class="cp-detail-label">Материал</span>
+                                        <span class="cp-detail-value">Хлопок</span>
+                                    </div>
+                                </div>
+                                <div class="collection-product-sizes">
+                                    <span class="cp-detail-label">Размер</span>
+                                    <div class="cp-sizes-list">
+                                        <button class="cp-size">S</button>
+                                        <button class="cp-size">M</button>
+                                        <button class="cp-size active">L</button>
+                                        <button class="cp-size">XL</button>
+                                    </div>
+                                </div>
+                                <div class="collection-product-bottom">
+                                    <span class="collection-product-price">3 490 ₽</span>
+                                    <button class="collection-product-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="collection-product-sizes">
-                        <span class="cp-detail-label">Размер</span>
-                        <div class="cp-sizes-list">
-                            <button class="cp-size">S</button>
-                            <button class="cp-size">M</button>
-                            <button class="cp-size active">L</button>
-                            <button class="cp-size">XL</button>
-                        </div>
-                    </div>
-                    <div class="collection-product-bottom">
-                        <span class="collection-product-price">3 490 ₽</span>
-                        <button class="collection-product-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
                     </div>
                 </div>
             </div>
+            <button class="carousel-arrow carousel-next" id="carouselNext">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+            <button class="carousel-dot active" data-slide="0"></button>
+            <button class="carousel-dot" data-slide="1"></button>
         </div>
     </section>
 
@@ -1735,6 +1826,28 @@
         }, observerOptions);
 
         fadeElements.forEach(el => observer.observe(el));
+
+        // Carousel
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselPrev = document.getElementById('carouselPrev');
+        const carouselNext = document.getElementById('carouselNext');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.carousel-slide').length;
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlide = index;
+            carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            carouselDots.forEach(dot => dot.classList.remove('active'));
+            carouselDots[currentSlide].classList.add('active');
+        }
+
+        carouselPrev.addEventListener('click', () => goToSlide(currentSlide - 1));
+        carouselNext.addEventListener('click', () => goToSlide(currentSlide + 1));
+        carouselDots.forEach(dot => {
+            dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
+        });
 
         // Collection Product Image Switcher
         document.querySelectorAll('.cp-thumb').forEach(thumb => {
