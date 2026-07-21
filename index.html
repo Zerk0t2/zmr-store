@@ -1273,7 +1273,13 @@
                 gap: 50px;
             }
 
-            .collection-product {
+        .collection-products {
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        .collection-product {
                 grid-template-columns: 1fr;
                 gap: 50px;
             }
@@ -1541,40 +1547,82 @@
             </div>
         </div>
 
-        <div class="collection-product fade-up">
-            <div class="collection-product-images">
-                <div class="collection-product-main" id="cpImg1">
-                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+        <div class="collection-products">
+            <!-- Double Bouquet -->
+            <div class="collection-product fade-up">
+                <div class="collection-product-images">
+                    <div class="collection-product-main active" id="cpImg1-1">
+                        <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+                    </div>
+                    <div class="collection-product-main" id="cpImg1-2" style="display:none">
+                        <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
+                    </div>
+                    <div class="collection-product-thumbs">
+                        <button class="cp-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
+                        <button class="cp-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                    </div>
                 </div>
-                <div class="collection-product-main" id="cpImg2" style="display:none">
-                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
-                </div>
-                <div class="collection-product-thumbs">
-                    <button class="cp-thumb active" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
-                    <button class="cp-thumb" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                <div class="collection-product-info">
+                    <h3 class="collection-product-name">Double Bouquet</h3>
+                    <p class="collection-product-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
+                    <div class="collection-product-details">
+                        <div class="cp-detail">
+                            <span class="cp-detail-label">Материал</span>
+                            <span class="cp-detail-value">Хлопок</span>
+                        </div>
+                    </div>
+                    <div class="collection-product-sizes">
+                        <span class="cp-detail-label">Размер</span>
+                        <div class="cp-sizes-list">
+                            <button class="cp-size">S</button>
+                            <button class="cp-size">M</button>
+                            <button class="cp-size active">L</button>
+                            <button class="cp-size">XL</button>
+                        </div>
+                    </div>
+                    <div class="collection-product-bottom">
+                        <span class="collection-product-price">3 490 ₽</span>
+                        <button class="collection-product-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
+                    </div>
                 </div>
             </div>
-            <div class="collection-product-info">
-                <h3 class="collection-product-name">Double Bouquet</h3>
-                <p class="collection-product-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
-                <div class="collection-product-details">
-                    <div class="cp-detail">
-                        <span class="cp-detail-label">Материал</span>
-                        <span class="cp-detail-value">Хлопок</span>
+
+            <!-- Garden Party -->
+            <div class="collection-product fade-up">
+                <div class="collection-product-images">
+                    <div class="collection-product-main active" id="cpImg2-1">
+                        <img src="garden-party-front.jpg" alt="Garden Party Front">
+                    </div>
+                    <div class="collection-product-main" id="cpImg2-2" style="display:none">
+                        <img src="garden-party-back.jpg" alt="Garden Party Back">
+                    </div>
+                    <div class="collection-product-thumbs">
+                        <button class="cp-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
+                        <button class="cp-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
                     </div>
                 </div>
-                <div class="collection-product-sizes">
-                    <span class="cp-detail-label">Размер</span>
-                    <div class="cp-sizes-list">
-                        <button class="cp-size">S</button>
-                        <button class="cp-size">M</button>
-                        <button class="cp-size active">L</button>
-                        <button class="cp-size">XL</button>
+                <div class="collection-product-info">
+                    <h3 class="collection-product-name">Garden Party</h3>
+                    <p class="collection-product-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
+                    <div class="collection-product-details">
+                        <div class="cp-detail">
+                            <span class="cp-detail-label">Материал</span>
+                            <span class="cp-detail-value">Хлопок</span>
+                        </div>
                     </div>
-                </div>
-                <div class="collection-product-bottom">
-                    <span class="collection-product-price">3 490 ₽</span>
-                    <button class="collection-product-buy">В корзину</button>
+                    <div class="collection-product-sizes">
+                        <span class="cp-detail-label">Размер</span>
+                        <div class="cp-sizes-list">
+                            <button class="cp-size">S</button>
+                            <button class="cp-size">M</button>
+                            <button class="cp-size active">L</button>
+                            <button class="cp-size">XL</button>
+                        </div>
+                    </div>
+                    <div class="collection-product-bottom">
+                        <span class="collection-product-price">3 490 ₽</span>
+                        <button class="collection-product-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1689,15 +1737,17 @@
         fadeElements.forEach(el => observer.observe(el));
 
         // Collection Product Image Switcher
-        const cpThumbs = document.querySelectorAll('.cp-thumb');
-        const cpImgs = document.querySelectorAll('.collection-product-main');
-
-        cpThumbs.forEach(thumb => {
+        document.querySelectorAll('.cp-thumb').forEach(thumb => {
             thumb.addEventListener('click', () => {
-                cpThumbs.forEach(t => t.classList.remove('active'));
+                const group = thumb.dataset.group;
+                const img = thumb.dataset.img;
+                const container = thumb.closest('.collection-product-images');
+
+                container.querySelectorAll('.cp-thumb').forEach(t => t.classList.remove('active'));
                 thumb.classList.add('active');
-                cpImgs.forEach(img => img.style.display = 'none');
-                document.getElementById('cpImg' + thumb.dataset.img).style.display = 'block';
+
+                container.querySelectorAll('.collection-product-main').forEach(i => i.style.display = 'none');
+                document.getElementById('cpImg' + group + '-' + img).style.display = 'block';
             });
         });
 
@@ -1779,16 +1829,23 @@
         // Size Selection for product
         document.querySelectorAll('.cp-size').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.cp-size').forEach(b => b.classList.remove('active'));
+                const list = btn.closest('.cp-sizes-list');
+                list.querySelectorAll('.cp-size').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             });
         });
 
-        // Add to cart button
-        document.querySelector('.collection-product-buy').addEventListener('click', () => {
-            const activeSize = document.querySelector('.cp-size.active');
-            const size = activeSize ? activeSize.textContent : 'L';
-            addToCart('Double Bouquet', 3490, size, 'double-bouquet-front.jpg');
+        // Add to cart buttons
+        document.querySelectorAll('.collection-product-buy').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const product = btn.closest('.collection-product');
+                const activeSize = product.querySelector('.cp-size.active');
+                const size = activeSize ? activeSize.textContent : 'L';
+                const name = btn.dataset.name;
+                const price = parseInt(btn.dataset.price);
+                const image = btn.dataset.image;
+                addToCart(name, price, size, image);
+            });
         });
 
         // Smooth scroll for anchor links
