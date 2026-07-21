@@ -2693,17 +2693,30 @@
             },
             async getProducts() {
                 const snap = await db.ref('products').once('value');
-                return snap.val() || [];
+                const raw = snap.val();
+                if (!raw) return [];
+                if (Array.isArray(raw)) return raw;
+                return Object.values(raw);
             },
             async setProducts(products) {
-                await db.ref('products').set(products);
+                const obj = {};
+                products.forEach((p, i) => { obj[i] = p; });
+                await db.ref('products').set(obj);
+            },
+            async addOrder(order) {
+                await db.ref('orders').push(order);
             },
             async getOrders() {
                 const snap = await db.ref('orders').once('value');
-                return snap.val() || [];
+                const raw = snap.val();
+                if (!raw) return [];
+                if (Array.isArray(raw)) return raw;
+                return Object.values(raw);
             },
             async setOrders(orders) {
-                await db.ref('orders').set(orders);
+                const obj = {};
+                orders.forEach((o, i) => { obj[i] = o; });
+                await db.ref('orders').set(obj);
             },
             getCurrentUser() { return localStorage.getItem('zmr_current') || null; },
             setCurrentUser(email) { localStorage.setItem('zmr_current', email); },
@@ -2965,9 +2978,7 @@
                 total: cart.reduce((s, i) => s + i.price, 0),
                 status: 'new'
             };
-            const orders = await DB.getOrders();
-            orders.push(order);
-            await DB.setOrders(orders);
+            await DB.addOrder(order);
             openSuccess();
         });
 
