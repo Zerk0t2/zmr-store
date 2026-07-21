@@ -1623,6 +1623,11 @@
             min-height: 20px;
         }
 
+        .auth-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         /* Profile */
         .profile-body {
             padding: 25px 30px;
@@ -2661,95 +2666,101 @@
         const JSONBIN_API = 'https://api.jsonbin.io/v3';
 
         const binIds = JSON.parse(localStorage.getItem('zmr_binIds') || '{}');
+        let USE_CLOUD = true;
 
         async function jsonbinGet(binId) {
             try {
                 const res = await fetch(JSONBIN_API + '/b/' + binId, {
                     headers: { 'X-Access-Key': JSONBIN_KEY }
                 });
-                if (!res.ok) return null;
+                if (!res.ok) { USE_CLOUD = false; return null; }
                 const data = await res.json();
                 return data.record;
-            } catch { return null; }
+            } catch(e) { USE_CLOUD = false; return null; }
         }
 
         async function jsonbinCreate(data) {
-            const res = await fetch(JSONBIN_API + '/bins', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
-                body: JSON.stringify(data)
-            });
-            const result = await res.json();
-            return result.metadata.id;
+            try {
+                const res = await fetch(JSONBIN_API + '/bins', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
+                    body: JSON.stringify(data)
+                });
+                if (!res.ok) { USE_CLOUD = false; return null; }
+                const result = await res.json();
+                return result.metadata.id;
+            } catch(e) { USE_CLOUD = false; return null; }
         }
 
         async function jsonbinUpdate(binId, data) {
-            await fetch(JSONBIN_API + '/bin/' + binId, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
-                body: JSON.stringify(data)
-            });
+            try {
+                await fetch(JSONBIN_API + '/bin/' + binId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_KEY },
+                    body: JSON.stringify(data)
+                });
+            } catch(e) { USE_CLOUD = false; }
         }
 
         const DB = {
             async getUsers() {
-                if (binIds.users) {
+                if (USE_CLOUD && binIds.users) {
                     const data = await jsonbinGet(binIds.users);
                     if (data) return data;
                 }
-                const defaultData = {};
-                const id = await jsonbinCreate(defaultData);
-                binIds.users = id;
-                localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
-                return defaultData;
+                if (USE_CLOUD) {
+                    const id = await jsonbinCreate({});
+                    if (id) { binIds.users = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); return {}; }
+                }
+                return JSON.parse(localStorage.getItem('zmr_users_fallback') || '{}');
             },
             async setUsers(users) {
-                if (binIds.users) {
+                localStorage.setItem('zmr_users_fallback', JSON.stringify(users));
+                if (USE_CLOUD && binIds.users) {
                     await jsonbinUpdate(binIds.users, users);
-                } else {
+                } else if (USE_CLOUD) {
                     const id = await jsonbinCreate(users);
-                    binIds.users = id;
-                    localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                    if (id) { binIds.users = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); }
                 }
             },
             async getProducts() {
-                if (binIds.products) {
+                if (USE_CLOUD && binIds.products) {
                     const data = await jsonbinGet(binIds.products);
                     if (data) return data;
                 }
-                const defaultData = [];
-                const id = await jsonbinCreate(defaultData);
-                binIds.products = id;
-                localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
-                return defaultData;
+                if (USE_CLOUD) {
+                    const id = await jsonbinCreate([]);
+                    if (id) { binIds.products = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); return []; }
+                }
+                return JSON.parse(localStorage.getItem('zmr_products_fallback') || '[]');
             },
             async setProducts(products) {
-                if (binIds.products) {
+                localStorage.setItem('zmr_products_fallback', JSON.stringify(products));
+                if (USE_CLOUD && binIds.products) {
                     await jsonbinUpdate(binIds.products, products);
-                } else {
+                } else if (USE_CLOUD) {
                     const id = await jsonbinCreate(products);
-                    binIds.products = id;
-                    localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                    if (id) { binIds.products = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); }
                 }
             },
             async getOrders() {
-                if (binIds.orders) {
+                if (USE_CLOUD && binIds.orders) {
                     const data = await jsonbinGet(binIds.orders);
                     if (data) return data;
                 }
-                const defaultData = [];
-                const id = await jsonbinCreate(defaultData);
-                binIds.orders = id;
-                localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
-                return defaultData;
+                if (USE_CLOUD) {
+                    const id = await jsonbinCreate([]);
+                    if (id) { binIds.orders = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); return []; }
+                }
+                return JSON.parse(localStorage.getItem('zmr_orders_fallback') || '[]');
             },
             async setOrders(orders) {
-                if (binIds.orders) {
+                localStorage.setItem('zmr_orders_fallback', JSON.stringify(orders));
+                if (USE_CLOUD && binIds.orders) {
                     await jsonbinUpdate(binIds.orders, orders);
-                } else {
+                } else if (USE_CLOUD) {
                     const id = await jsonbinCreate(orders);
-                    binIds.orders = id;
-                    localStorage.setItem('zmr_binIds', JSON.stringify(binIds));
+                    if (id) { binIds.orders = id; localStorage.setItem('zmr_binIds', JSON.stringify(binIds)); }
                 }
             },
             getCurrentUser() { return localStorage.getItem('zmr_current') || null; },
@@ -3211,27 +3222,38 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
-                const users = await DB.getUsers();
-                if (!users[ADMIN_EMAIL]) {
-                    users[ADMIN_EMAIL] = { name: 'Администратор', email: ADMIN_EMAIL, phone: '—', password: ADMIN_PASS };
-                    await DB.setUsers(users);
+            const submitBtn = e.target.querySelector('.auth-submit');
+            const errEl = document.getElementById('loginError');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Вход...';
+            errEl.textContent = '';
+            try {
+                if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
+                    const users = await DB.getUsers();
+                    if (!users[ADMIN_EMAIL]) {
+                        users[ADMIN_EMAIL] = { name: 'Администратор', email: ADMIN_EMAIL, phone: '—', password: ADMIN_PASS };
+                        await DB.setUsers(users);
+                    }
+                    currentUser = ADMIN_EMAIL;
+                    DB.setCurrentUser(ADMIN_EMAIL);
+                    closeAllAuth();
+                    updateProfileBtn();
+                } else {
+                    const users = await DB.getUsers();
+                    if (users[email] && users[email].password === password) {
+                        currentUser = email;
+                        DB.setCurrentUser(email);
+                        closeAllAuth();
+                        updateProfileBtn();
+                    } else {
+                        errEl.textContent = 'Неверный email или пароль';
+                    }
                 }
-                currentUser = ADMIN_EMAIL;
-                DB.setCurrentUser(ADMIN_EMAIL);
-                closeAllAuth();
-                updateProfileBtn();
-                return;
+            } catch(err) {
+                errEl.textContent = 'Ошибка подключения к серверу';
             }
-            const users = await DB.getUsers();
-            if (users[email] && users[email].password === password) {
-                currentUser = email;
-                DB.setCurrentUser(email);
-                closeAllAuth();
-                updateProfileBtn();
-            } else {
-                document.getElementById('loginError').textContent = 'Неверный email или пароль';
-            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Войти';
         });
 
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
@@ -3240,17 +3262,30 @@
             const email = document.getElementById('regEmail').value;
             const phone = document.getElementById('regPhone').value;
             const password = document.getElementById('regPassword').value;
-            const users = await DB.getUsers();
-            if (users[email]) {
-                document.getElementById('registerError').textContent = 'Аккаунт уже существует';
-                return;
+            const submitBtn = e.target.querySelector('.auth-submit');
+            const errEl = document.getElementById('registerError');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Регистрация...';
+            errEl.textContent = '';
+            try {
+                const users = await DB.getUsers();
+                if (users[email]) {
+                    errEl.textContent = 'Аккаунт уже существует';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Создать аккаунт';
+                    return;
+                }
+                users[email] = { name, email, phone, password };
+                await DB.setUsers(users);
+                currentUser = email;
+                DB.setCurrentUser(email);
+                closeAllAuth();
+                updateProfileBtn();
+            } catch(err) {
+                errEl.textContent = 'Ошибка подключения к серверу';
             }
-            users[email] = { name, email, phone, password };
-            await DB.setUsers(users);
-            currentUser = email;
-            DB.setCurrentUser(email);
-            closeAllAuth();
-            updateProfileBtn();
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Создать аккаунт';
         });
 
         document.getElementById('profileLogout').addEventListener('click', () => {
