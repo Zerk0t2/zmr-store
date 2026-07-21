@@ -736,6 +736,212 @@
             gap: 15px;
         }
 
+        /* Collection Expand */
+        .collection-expand {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .collection-expand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .collection-expand-header:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .collection-expand-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .collection-expand-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .collection-expand-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+
+        .collection-expand-arrow {
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .collection-expand.open .collection-expand-arrow {
+            transform: rotate(180deg);
+        }
+
+        .collection-expand-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .collection-expand.open .collection-expand-body {
+            max-height: 2000px;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding-top: 30px;
+        }
+
+        .collection-card-product {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .collection-card-product:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .collection-card-images {
+            position: relative;
+        }
+
+        .collection-card-main {
+            height: 350px;
+            background: var(--bg-secondary);
+            display: none;
+        }
+
+        .collection-card-main.active {
+            display: block;
+        }
+
+        .collection-card-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .collection-card-thumbs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 15px;
+        }
+
+        .cc-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+            padding: 0;
+        }
+
+        .cc-thumb.active {
+            border-color: var(--accent-1);
+        }
+
+        .cc-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .collection-card-info {
+            padding: 20px;
+        }
+
+        .collection-card-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .collection-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .collection-card-sizes {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .cc-size {
+            width: 38px;
+            height: 38px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cc-size:hover {
+            border-color: var(--accent-1);
+            color: var(--accent-1);
+        }
+
+        .cc-size.active {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+            color: #0a0a0a;
+        }
+
+        .collection-card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .collection-card-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .collection-card-buy {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            color: #0a0a0a;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .collection-card-buy:hover {
+            transform: scale(1.05);
+        }
+
 
 
         /* Cart */
@@ -1098,215 +1304,6 @@
         }
 
         @media (max-width: 1024px) {
-            .new-drop-grid {
-                grid-template-columns: 1fr;
-                gap: 50px;
-            }
-
-        /* Collection Expand */
-        .collection-expand {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .collection-expand-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 30px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .collection-expand-header:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .collection-expand-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .collection-expand-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .collection-expand-count {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            padding: 5px 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-        }
-
-        .collection-expand-arrow {
-            color: var(--text-secondary);
-            transition: transform 0.3s ease;
-        }
-
-        .collection-expand.open .collection-expand-arrow {
-            transform: rotate(180deg);
-        }
-
-        .collection-expand-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .collection-expand.open .collection-expand-body {
-            max-height: 2000px;
-        }
-
-        .collection-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            padding-top: 30px;
-        }
-
-        .collection-card-product {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .collection-card-product:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .collection-card-images {
-            position: relative;
-        }
-
-        .collection-card-main {
-            height: 350px;
-            background: var(--bg-secondary);
-        }
-
-        .collection-card-main img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .collection-card-thumbs {
-            display: flex;
-            gap: 8px;
-            padding: 12px 15px;
-        }
-
-        .cc-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--bg-secondary);
-            padding: 0;
-        }
-
-        .cc-thumb.active {
-            border-color: var(--accent-1);
-        }
-
-        .cc-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .collection-card-info {
-            padding: 20px;
-        }
-
-        .collection-card-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .collection-card-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .collection-card-sizes {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-
-        .cc-size {
-            width: 38px;
-            height: 38px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .cc-size:hover {
-            border-color: var(--accent-1);
-            color: var(--accent-1);
-        }
-
-        .cc-size.active {
-            background: var(--accent-1);
-            border-color: var(--accent-1);
-            color: #0a0a0a;
-        }
-
-        .collection-card-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 15px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .collection-card-price {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .collection-card-buy {
-            padding: 10px 22px;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            border: none;
-            color: #0a0a0a;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .collection-card-buy:hover {
-            transform: scale(1.05);
-        }
-                grid-template-columns: 1fr;
-                gap: 50px;
-            }
-
             .collection-grid {
                 grid-template-columns: 1fr;
             }
@@ -1590,7 +1587,7 @@
                             <div class="collection-card-main active" id="ccImg1-1">
                                 <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
                             </div>
-                            <div class="collection-card-main" id="ccImg1-2" style="display:none">
+                            <div class="collection-card-main" id="ccImg1-2">
                                 <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
                             </div>
                             <div class="collection-card-thumbs">
@@ -1620,7 +1617,7 @@
                             <div class="collection-card-main active" id="ccImg2-1">
                                 <img src="garden-party-front.jpg" alt="Garden Party Front">
                             </div>
-                            <div class="collection-card-main" id="ccImg2-2" style="display:none">
+                            <div class="collection-card-main" id="ccImg2-2">
                                 <img src="garden-party-back.jpg" alt="Garden Party Back">
                             </div>
                             <div class="collection-card-thumbs">
@@ -1774,8 +1771,8 @@
                 container.querySelectorAll('.cc-thumb').forEach(t => t.classList.remove('active'));
                 thumb.classList.add('active');
 
-                container.querySelectorAll('.collection-card-main').forEach(i => i.style.display = 'none');
-                document.getElementById('ccImg' + group + '-' + img).style.display = 'block';
+                container.querySelectorAll('.collection-card-main').forEach(i => i.classList.remove('active'));
+                document.getElementById('ccImg' + group + '-' + img).classList.add('active');
             });
         });
 
