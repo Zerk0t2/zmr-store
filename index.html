@@ -809,13 +809,15 @@
             top: 35px;
             left: 40px;
             font-size: 3rem;
-            opacity: 0.15;
+            opacity: 0.6;
             transition: all 0.4s ease;
+            filter: grayscale(1) brightness(2);
         }
 
         .category-card:hover .category-icon {
-            opacity: 0.3;
-            transform: translateY(-5px);
+            opacity: 0.9;
+            filter: grayscale(0) brightness(1);
+            transform: translateY(-5px) scale(1.1);
         }
 
         /* Collection Expand */
