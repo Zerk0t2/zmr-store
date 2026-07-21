@@ -1368,6 +1368,11 @@
             color: var(--text-secondary);
         }
 
+        .checkout-input option {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
         .checkout-textarea {
             resize: vertical;
             min-height: 80px;
@@ -1745,7 +1750,9 @@
             <form class="checkout-form" id="checkoutForm">
                 <input type="text" class="checkout-input" placeholder="Имя" required>
                 <input type="tel" class="checkout-input" placeholder="Телефон" required>
-                <input type="text" class="checkout-input" placeholder="Город" required>
+                <select class="checkout-input" required>
+                    <option value="Санкт-Петербург">Санкт-Петербург</option>
+                </select>
                 <textarea class="checkout-input checkout-textarea" placeholder="Адрес доставки" required></textarea>
                 <button type="submit" class="checkout-submit">Подтвердить заказ</button>
             </form>
