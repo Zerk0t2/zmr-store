@@ -539,176 +539,6 @@
             margin-top: 10px;
         }
 
-        .collection-product {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .collection-product-images {
-            position: relative;
-        }
-
-        .collection-product-main {
-            border-radius: 24px;
-            overflow: hidden;
-            background: var(--bg-secondary);
-            border: 1px solid var(--glass-border);
-        }
-
-        .collection-product-main img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .collection-product-thumbs {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-            justify-content: center;
-        }
-
-        .cp-thumb {
-            width: 70px;
-            height: 70px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--bg-secondary);
-            padding: 0;
-        }
-
-        .cp-thumb.active {
-            border-color: var(--accent-1);
-        }
-
-        .cp-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .collection-product-info {
-            padding: 20px 0;
-        }
-
-        .collection-product-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: -2px;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .collection-product-desc {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 35px;
-            max-width: 450px;
-        }
-
-        .collection-product-details {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 35px;
-            padding-bottom: 35px;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .cp-detail {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cp-detail-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .cp-detail-value {
-            font-size: 0.85rem;
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .collection-product-sizes {
-            margin-bottom: 35px;
-        }
-
-        .collection-product-sizes .cp-detail-label {
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        .cp-sizes-list {
-            display: flex;
-            gap: 10px;
-        }
-
-        .cp-size {
-            width: 45px;
-            height: 45px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .cp-size:hover {
-            border-color: var(--accent-1);
-            color: var(--accent-1);
-        }
-
-        .cp-size.active {
-            background: var(--accent-1);
-            border-color: var(--accent-1);
-            color: #0a0a0a;
-        }
-
-        .collection-product-bottom {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .collection-product-price {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .collection-product-buy {
-            padding: 16px 40px;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            border: none;
-            color: #0a0a0a;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .collection-product-buy:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
-        }
-
         .collection-card {
             border-radius: 24px;
             overflow: hidden;
@@ -1273,92 +1103,216 @@
                 gap: 50px;
             }
 
-        .collection-products {
-            display: flex;
-            flex-direction: column;
-            gap: 100px;
+        /* Collection Expand */
+        .collection-expand {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Carousel */
-        .collection-carousel {
-            position: relative;
+        .collection-expand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .collection-expand-header:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .collection-expand-info {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
-        .carousel-viewport {
+        .collection-expand-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .collection-expand-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+
+        .collection-expand-arrow {
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .collection-expand.open .collection-expand-arrow {
+            transform: rotate(180deg);
+        }
+
+        .collection-expand-body {
+            max-height: 0;
             overflow: hidden;
-            flex: 1;
-            border-radius: 24px;
+            transition: max-height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .collection-expand.open .collection-expand-body {
+            max-height: 2000px;
         }
 
-        .carousel-slide {
-            min-width: 100%;
-            padding: 0 10px;
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding-top: 30px;
         }
 
-        .carousel-arrow {
-            width: 50px;
-            height: 50px;
+        .collection-card-product {
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            z-index: 5;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
         }
 
-        .carousel-arrow:hover {
-            background: var(--accent-1);
-            color: #0a0a0a;
+        .collection-card-product:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .collection-card-images {
+            position: relative;
+        }
+
+        .collection-card-main {
+            height: 350px;
+            background: var(--bg-secondary);
+        }
+
+        .collection-card-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .collection-card-thumbs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 15px;
+        }
+
+        .cc-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+            padding: 0;
+        }
+
+        .cc-thumb.active {
             border-color: var(--accent-1);
         }
 
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
+        .cc-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .carousel-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--glass-border);
-            border: none;
+        .collection-card-info {
+            padding: 20px;
+        }
+
+        .collection-card-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .collection-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .collection-card-sizes {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .cc-size {
+            width: 38px;
+            height: 38px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .carousel-dot.active {
-            background: var(--accent-1);
-            transform: scale(1.3);
+        .cc-size:hover {
+            border-color: var(--accent-1);
+            color: var(--accent-1);
         }
 
-            .collection-product {
+        .cc-size.active {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+            color: #0a0a0a;
+        }
+
+        .collection-card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .collection-card-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .collection-card-buy {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            color: #0a0a0a;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .collection-card-buy:hover {
+            transform: scale(1.05);
+        }
                 grid-template-columns: 1fr;
                 gap: 50px;
             }
 
-            .carousel-arrow {
-                width: 40px;
-                height: 40px;
+            .collection-grid {
+                grid-template-columns: 1fr;
             }
 
-            .collection-product-name {
-                font-size: 2.5rem;
+            .collection-card-main {
+                height: 280px;
             }
 
             .hero-visual {
@@ -1620,102 +1574,77 @@
             </div>
         </div>
 
-        <div class="collection-carousel">
-            <button class="carousel-arrow carousel-prev" id="carouselPrev">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <div class="carousel-viewport" id="carouselViewport">
-                <div class="carousel-track" id="carouselTrack">
+        <div class="collection-expand" id="collectionExpand">
+            <div class="collection-expand-header fade-up" id="collectionToggle">
+                <div class="collection-expand-info">
+                    <h3 class="collection-expand-name">Floral Paradise</h3>
+                    <span class="collection-expand-count">2 вещи</span>
+                </div>
+                <svg class="collection-expand-arrow" id="collectionArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="collection-expand-body" id="collectionBody">
+                <div class="collection-grid">
                     <!-- Double Bouquet -->
-                    <div class="carousel-slide">
-                        <div class="collection-product">
-                            <div class="collection-product-images">
-                                <div class="collection-product-main active" id="cpImg1-1">
-                                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
-                                </div>
-                                <div class="collection-product-main" id="cpImg1-2" style="display:none">
-                                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
-                                </div>
-                                <div class="collection-product-thumbs">
-                                    <button class="cp-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
-                                    <button class="cp-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
-                                </div>
+                    <div class="collection-card-product">
+                        <div class="collection-card-images">
+                            <div class="collection-card-main active" id="ccImg1-1">
+                                <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
                             </div>
-                            <div class="collection-product-info">
-                                <h3 class="collection-product-name">Double Bouquet</h3>
-                                <p class="collection-product-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
-                                <div class="collection-product-details">
-                                    <div class="cp-detail">
-                                        <span class="cp-detail-label">Материал</span>
-                                        <span class="cp-detail-value">Хлопок</span>
-                                    </div>
-                                </div>
-                                <div class="collection-product-sizes">
-                                    <span class="cp-detail-label">Размер</span>
-                                    <div class="cp-sizes-list">
-                                        <button class="cp-size">S</button>
-                                        <button class="cp-size">M</button>
-                                        <button class="cp-size active">L</button>
-                                        <button class="cp-size">XL</button>
-                                    </div>
-                                </div>
-                                <div class="collection-product-bottom">
-                                    <span class="collection-product-price">3 490 ₽</span>
-                                    <button class="collection-product-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
-                                </div>
+                            <div class="collection-card-main" id="ccImg1-2" style="display:none">
+                                <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
+                            </div>
+                            <div class="collection-card-thumbs">
+                                <button class="cc-thumb active" data-group="1" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
+                                <button class="cc-thumb" data-group="1" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                            </div>
+                        </div>
+                        <div class="collection-card-info">
+                            <h4 class="collection-card-name">Double Bouquet</h4>
+                            <p class="collection-card-desc">Чёрная футболка из плотного хлопка с принтом двойного цветочного букета.</p>
+                            <div class="collection-card-sizes">
+                                <button class="cc-size">S</button>
+                                <button class="cc-size">M</button>
+                                <button class="cc-size active">L</button>
+                                <button class="cc-size">XL</button>
+                            </div>
+                            <div class="collection-card-bottom">
+                                <span class="collection-card-price">3 490 ₽</span>
+                                <button class="collection-card-buy" data-name="Double Bouquet" data-price="3490" data-image="double-bouquet-front.jpg">В корзину</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Garden Party -->
-                    <div class="carousel-slide">
-                        <div class="collection-product">
-                            <div class="collection-product-images">
-                                <div class="collection-product-main active" id="cpImg2-1">
-                                    <img src="garden-party-front.jpg" alt="Garden Party Front">
-                                </div>
-                                <div class="collection-product-main" id="cpImg2-2" style="display:none">
-                                    <img src="garden-party-back.jpg" alt="Garden Party Back">
-                                </div>
-                                <div class="collection-product-thumbs">
-                                    <button class="cp-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
-                                    <button class="cp-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
-                                </div>
+                    <div class="collection-card-product">
+                        <div class="collection-card-images">
+                            <div class="collection-card-main active" id="ccImg2-1">
+                                <img src="garden-party-front.jpg" alt="Garden Party Front">
                             </div>
-                            <div class="collection-product-info">
-                                <h3 class="collection-product-name">Garden Party</h3>
-                                <p class="collection-product-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
-                                <div class="collection-product-details">
-                                    <div class="cp-detail">
-                                        <span class="cp-detail-label">Материал</span>
-                                        <span class="cp-detail-value">Хлопок</span>
-                                    </div>
-                                </div>
-                                <div class="collection-product-sizes">
-                                    <span class="cp-detail-label">Размер</span>
-                                    <div class="cp-sizes-list">
-                                        <button class="cp-size">S</button>
-                                        <button class="cp-size">M</button>
-                                        <button class="cp-size active">L</button>
-                                        <button class="cp-size">XL</button>
-                                    </div>
-                                </div>
-                                <div class="collection-product-bottom">
-                                    <span class="collection-product-price">3 490 ₽</span>
-                                    <button class="collection-product-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
-                                </div>
+                            <div class="collection-card-main" id="ccImg2-2" style="display:none">
+                                <img src="garden-party-back.jpg" alt="Garden Party Back">
+                            </div>
+                            <div class="collection-card-thumbs">
+                                <button class="cc-thumb active" data-group="2" data-img="1"><img src="garden-party-front.jpg" alt=""></button>
+                                <button class="cc-thumb" data-group="2" data-img="2"><img src="garden-party-back.jpg" alt=""></button>
+                            </div>
+                        </div>
+                        <div class="collection-card-info">
+                            <h4 class="collection-card-name">Garden Party</h4>
+                            <p class="collection-card-desc">Чёрная футболка с цветочным принтом в стиле садовой вечеринки.</p>
+                            <div class="collection-card-sizes">
+                                <button class="cc-size">S</button>
+                                <button class="cc-size">M</button>
+                                <button class="cc-size active">L</button>
+                                <button class="cc-size">XL</button>
+                            </div>
+                            <div class="collection-card-bottom">
+                                <span class="collection-card-price">3 490 ₽</span>
+                                <button class="collection-card-buy" data-name="Garden Party" data-price="3490" data-image="garden-party-front.jpg">В корзину</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="carousel-arrow carousel-next" id="carouselNext">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
-        </div>
-        <div class="carousel-dots" id="carouselDots">
-            <button class="carousel-dot active" data-slide="0"></button>
-            <button class="carousel-dot" data-slide="1"></button>
         </div>
     </section>
 
@@ -1827,40 +1756,48 @@
 
         fadeElements.forEach(el => observer.observe(el));
 
-        // Carousel
-        const carouselTrack = document.getElementById('carouselTrack');
-        const carouselPrev = document.getElementById('carouselPrev');
-        const carouselNext = document.getElementById('carouselNext');
-        const carouselDots = document.querySelectorAll('.carousel-dot');
-        let currentSlide = 0;
-        const totalSlides = document.querySelectorAll('.carousel-slide').length;
+        // Collection Expand Toggle
+        const collectionToggle = document.getElementById('collectionToggle');
+        const collectionExpand = document.getElementById('collectionExpand');
 
-        function goToSlide(index) {
-            if (index < 0 || index >= totalSlides) return;
-            currentSlide = index;
-            carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-            carouselDots.forEach(dot => dot.classList.remove('active'));
-            carouselDots[currentSlide].classList.add('active');
-        }
-
-        carouselPrev.addEventListener('click', () => goToSlide(currentSlide - 1));
-        carouselNext.addEventListener('click', () => goToSlide(currentSlide + 1));
-        carouselDots.forEach(dot => {
-            dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
+        collectionToggle.addEventListener('click', () => {
+            collectionExpand.classList.toggle('open');
         });
 
-        // Collection Product Image Switcher
-        document.querySelectorAll('.cp-thumb').forEach(thumb => {
+        // Collection Card Image Switcher
+        document.querySelectorAll('.cc-thumb').forEach(thumb => {
             thumb.addEventListener('click', () => {
                 const group = thumb.dataset.group;
                 const img = thumb.dataset.img;
-                const container = thumb.closest('.collection-product-images');
+                const container = thumb.closest('.collection-card-images');
 
-                container.querySelectorAll('.cp-thumb').forEach(t => t.classList.remove('active'));
+                container.querySelectorAll('.cc-thumb').forEach(t => t.classList.remove('active'));
                 thumb.classList.add('active');
 
-                container.querySelectorAll('.collection-product-main').forEach(i => i.style.display = 'none');
-                document.getElementById('cpImg' + group + '-' + img).style.display = 'block';
+                container.querySelectorAll('.collection-card-main').forEach(i => i.style.display = 'none');
+                document.getElementById('ccImg' + group + '-' + img).style.display = 'block';
+            });
+        });
+
+        // Size Selection
+        document.querySelectorAll('.cc-size').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const list = btn.closest('.collection-card-sizes');
+                list.querySelectorAll('.cc-size').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Add to cart buttons
+        document.querySelectorAll('.collection-card-buy').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const product = btn.closest('.collection-card-product');
+                const activeSize = product.querySelector('.cc-size.active');
+                const size = activeSize ? activeSize.textContent : 'L';
+                const name = btn.dataset.name;
+                const price = parseInt(btn.dataset.price);
+                const image = btn.dataset.image;
+                addToCart(name, price, size, image);
             });
         });
 
@@ -1945,19 +1882,6 @@
                 const list = btn.closest('.cp-sizes-list');
                 list.querySelectorAll('.cp-size').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-            });
-        });
-
-        // Add to cart buttons
-        document.querySelectorAll('.collection-product-buy').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const product = btn.closest('.collection-product');
-                const activeSize = product.querySelector('.cp-size.active');
-                const size = activeSize ? activeSize.textContent : 'L';
-                const name = btn.dataset.name;
-                const price = parseInt(btn.dataset.price);
-                const image = btn.dataset.image;
-                addToCart(name, price, size, image);
             });
         });
 
