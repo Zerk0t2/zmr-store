@@ -524,31 +524,22 @@
             color: var(--text-primary);
         }
 
-        /* New Drop */
-        .new-drop {
+        /* Collections */
+        .collections {
             padding: 120px 60px;
             position: relative;
             z-index: 2;
         }
 
-        .new-drop-badge {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .new-drop-badge-text {
-            display: inline-block;
-            padding: 10px 30px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
+        .section-subtitle {
             font-size: 0.8rem;
             color: var(--accent-3);
             text-transform: uppercase;
             letter-spacing: 3px;
+            margin-top: 10px;
         }
 
-        .new-drop-grid {
+        .collection-product {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 80px;
@@ -557,36 +548,31 @@
             margin: 0 auto;
         }
 
-        .new-drop-images {
+        .collection-product-images {
             position: relative;
         }
 
-        .new-drop-img {
-            display: none;
+        .collection-product-main {
             border-radius: 24px;
             overflow: hidden;
             background: var(--bg-secondary);
             border: 1px solid var(--glass-border);
         }
 
-        .new-drop-img.active {
-            display: block;
-        }
-
-        .new-drop-img img {
+        .collection-product-main img {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        .new-drop-thumbs {
+        .collection-product-thumbs {
             display: flex;
             gap: 12px;
             margin-top: 15px;
             justify-content: center;
         }
 
-        .new-drop-thumb {
+        .cp-thumb {
             width: 70px;
             height: 70px;
             border-radius: 12px;
@@ -598,29 +584,21 @@
             padding: 0;
         }
 
-        .new-drop-thumb.active {
+        .cp-thumb.active {
             border-color: var(--accent-1);
         }
 
-        .new-drop-thumb img {
+        .cp-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .new-drop-info {
+        .collection-product-info {
             padding: 20px 0;
         }
 
-        .new-drop-collection {
-            font-size: 0.8rem;
-            color: var(--accent-3);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-
-        .new-drop-name {
+        .collection-product-name {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 3.5rem;
             font-weight: 700;
@@ -629,7 +607,7 @@
             color: var(--text-primary);
         }
 
-        .new-drop-desc {
+        .collection-product-desc {
             font-size: 1rem;
             color: var(--text-secondary);
             line-height: 1.7;
@@ -637,7 +615,7 @@
             max-width: 450px;
         }
 
-        .new-drop-details {
+        .collection-product-details {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -646,38 +624,38 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .new-drop-detail {
+        .cp-detail {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .detail-label {
+        .cp-detail-label {
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
 
-        .detail-value {
+        .cp-detail-value {
             font-size: 0.85rem;
             color: var(--text-primary);
             font-weight: 500;
         }
 
-        .new-drop-sizes {
+        .collection-product-sizes {
             margin-bottom: 35px;
         }
 
-        .new-drop-sizes .detail-label {
+        .collection-product-sizes .cp-detail-label {
             display: block;
             margin-bottom: 12px;
         }
 
-        .new-drop-sizes-list {
+        .cp-sizes-list {
             display: flex;
             gap: 10px;
         }
 
-        .new-drop-size {
+        .cp-size {
             width: 45px;
             height: 45px;
             background: var(--glass);
@@ -690,31 +668,31 @@
             transition: all 0.3s ease;
         }
 
-        .new-drop-size:hover {
+        .cp-size:hover {
             border-color: var(--accent-1);
             color: var(--accent-1);
         }
 
-        .new-drop-size.active {
+        .cp-size.active {
             background: var(--accent-1);
             border-color: var(--accent-1);
             color: #0a0a0a;
         }
 
-        .new-drop-bottom {
+        .collection-product-bottom {
             display: flex;
             align-items: center;
             gap: 30px;
         }
 
-        .new-drop-price {
+        .collection-product-price {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
         }
 
-        .new-drop-buy {
+        .collection-product-buy {
             padding: 16px 40px;
             background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             border: none;
@@ -726,22 +704,9 @@
             transition: all 0.3s ease;
         }
 
-        .new-drop-buy:hover {
+        .collection-product-buy:hover {
             transform: translateY(-3px);
             box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Collections */
-        .collections {
-            padding: 120px 60px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .collections-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
         }
 
         .collection-card {
@@ -1112,14 +1077,15 @@
                 gap: 50px;
             }
 
-            .new-drop-name {
+            .collection-product {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .collection-product-name {
                 font-size: 2.5rem;
             }
 
-            .collections-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .hero-visual {
                 display: none;
             }
@@ -1348,81 +1314,58 @@
         </div>
     </section>
 
-    <!-- New Drop -->
-    <section class="new-drop">
-        <div class="new-drop-badge fade-up">
-            <span class="new-drop-badge-text">New Drop</span>
-        </div>
-        <div class="new-drop-grid">
-            <div class="new-drop-images fade-up">
-                <div class="new-drop-img active" id="dropImg1">
-                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
-                </div>
-                <div class="new-drop-img" id="dropImg2">
-                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
-                </div>
-                <div class="new-drop-thumbs">
-                    <button class="new-drop-thumb active" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
-                    <button class="new-drop-thumb" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
-                </div>
-            </div>
-            <div class="new-drop-info fade-up">
-                <p class="new-drop-collection">Floral Paradise</p>
-                <h2 class="new-drop-name">Double Bouquet</h2>
-                <p class="new-drop-desc">Чёрная оверсайз футболка из плотного хлопка с принтом двойного цветочного букета. Рисунок нанесён методом шелкографии — не выцветает после стирки.</p>
-                <div class="new-drop-details">
-                    <div class="new-drop-detail">
-                        <span class="detail-label">Материал</span>
-                        <span class="detail-value">100% хлопок, 220г/м²</span>
-                    </div>
-                    <div class="new-drop-detail">
-                        <span class="detail-label">Крой</span>
-                        <span class="detail-value">Оверсайз</span>
-                    </div>
-                    <div class="new-drop-detail">
-                        <span class="detail-label">Принт</span>
-                        <span class="detail-value">Шелкография</span>
-                    </div>
-                </div>
-                <div class="new-drop-sizes">
-                    <span class="detail-label">Размер</span>
-                    <div class="new-drop-sizes-list">
-                        <button class="new-drop-size">S</button>
-                        <button class="new-drop-size">M</button>
-                        <button class="new-drop-size active">L</button>
-                        <button class="new-drop-size">XL</button>
-                    </div>
-                </div>
-                <div class="new-drop-bottom">
-                    <span class="new-drop-price">3 490 ₽</span>
-                    <button class="new-drop-buy">В корзину</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Collections -->
     <section class="collections" id="collections">
         <div class="section-header fade-up">
             <div>
-                <p class="section-tag">Коллекции</p>
-                <h2 class="section-title">Наши коллекции</h2>
+                <p class="section-tag">Коллекция</p>
+                <h2 class="section-title">Floral Paradise</h2>
+                <p class="section-subtitle">Весна/Лето 2026</p>
             </div>
         </div>
 
-        <div class="collections-grid">
-            <div class="collection-card fade-up">
-                <div class="collection-image">
-                    <div class="collection-overlay"></div>
-                    <div class="collection-content">
-                        <span class="collection-season">Весна/Лето 2026</span>
-                        <h3 class="collection-name">Floral Paradise</h3>
-                        <p class="collection-desc">Нежные цветочные принты на базовых вещах. Лёгкие ткани, свежие краски и летнее настроение в каждой детали.</p>
-                        <div class="collection-items">
-                            <span class="collection-count">12 вещей</span>
-                        </div>
-                        <a href="#" class="collection-link">Смотреть коллекцию <span>→</span></a>
+        <div class="collection-product fade-up">
+            <div class="collection-product-images">
+                <div class="collection-product-main" id="cpImg1">
+                    <img src="double-bouquet-front.jpg" alt="Double Bouquet Front">
+                </div>
+                <div class="collection-product-main" id="cpImg2" style="display:none">
+                    <img src="double-bouquet-back.jpg" alt="Double Bouquet Back">
+                </div>
+                <div class="collection-product-thumbs">
+                    <button class="cp-thumb active" data-img="1"><img src="double-bouquet-front.jpg" alt=""></button>
+                    <button class="cp-thumb" data-img="2"><img src="double-bouquet-back.jpg" alt=""></button>
+                </div>
+            </div>
+            <div class="collection-product-info">
+                <h3 class="collection-product-name">Double Bouquet</h3>
+                <p class="collection-product-desc">Чёрная оверсайз футболка из плотного хлопка с принтом двойного цветочного букета. Рисунок нанесён методом шелкографии — не выцветает после стирки.</p>
+                <div class="collection-product-details">
+                    <div class="cp-detail">
+                        <span class="cp-detail-label">Материал</span>
+                        <span class="cp-detail-value">100% хлопок, 220г/м²</span>
                     </div>
+                    <div class="cp-detail">
+                        <span class="cp-detail-label">Крой</span>
+                        <span class="cp-detail-value">Оверсайз</span>
+                    </div>
+                    <div class="cp-detail">
+                        <span class="cp-detail-label">Принт</span>
+                        <span class="cp-detail-value">Шелкография</span>
+                    </div>
+                </div>
+                <div class="collection-product-sizes">
+                    <span class="cp-detail-label">Размер</span>
+                    <div class="cp-sizes-list">
+                        <button class="cp-size">S</button>
+                        <button class="cp-size">M</button>
+                        <button class="cp-size active">L</button>
+                        <button class="cp-size">XL</button>
+                    </div>
+                </div>
+                <div class="collection-product-bottom">
+                    <span class="collection-product-price">3 490 ₽</span>
+                    <button class="collection-product-buy">В корзину</button>
                 </div>
             </div>
         </div>
@@ -1562,23 +1505,23 @@
 
         fadeElements.forEach(el => observer.observe(el));
 
-        // New Drop Image Switcher
-        const dropThumbs = document.querySelectorAll('.new-drop-thumb');
-        const dropImgs = document.querySelectorAll('.new-drop-img');
+        // Collection Product Image Switcher
+        const cpThumbs = document.querySelectorAll('.cp-thumb');
+        const cpImgs = document.querySelectorAll('.collection-product-main');
 
-        dropThumbs.forEach(thumb => {
+        cpThumbs.forEach(thumb => {
             thumb.addEventListener('click', () => {
-                dropThumbs.forEach(t => t.classList.remove('active'));
-                dropImgs.forEach(i => i.classList.remove('active'));
+                cpThumbs.forEach(t => t.classList.remove('active'));
                 thumb.classList.add('active');
-                document.getElementById('dropImg' + thumb.dataset.img).classList.add('active');
+                cpImgs.forEach(img => img.style.display = 'none');
+                document.getElementById('cpImg' + thumb.dataset.img).style.display = 'block';
             });
         });
 
         // Size Selection
-        document.querySelectorAll('.new-drop-size').forEach(btn => {
+        document.querySelectorAll('.cp-size').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.new-drop-size').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.cp-size').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             });
         });
