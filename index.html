@@ -2656,7 +2656,7 @@
                     <svg class="collection-expand-arrow" id="collectionArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
                 <div class="collection-expand-body" id="collectionBody">
-                    <div class="collection-grid">
+                    <div class="collection-grid" id="grid-floral-paradise">
                         <!-- Double Bouquet -->
                         <div class="collection-card-product">
                             <div class="collection-card-images">
@@ -2762,7 +2762,7 @@
                     <svg class="collection-expand-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
                 <div class="collection-expand-body">
-                    <div class="collection-grid">
+                    <div class="collection-grid" id="grid-urban-echo">
                         <div class="collection-card-product">
                             <div class="collection-card-info" style="padding: 40px 20px; text-align: center;">
                                 <p class="collection-card-desc" style="color: var(--text-secondary);">Скоро в продаже</p>
@@ -2976,17 +2976,82 @@
             });
         });
 
-        // Add to cart buttons
-        document.querySelectorAll('.collection-card-buy').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const product = btn.closest('.collection-card-product');
+        // Load Firebase products into collections
+        async function loadCollectionProducts() {
+            const products = await DB.getProducts();
+            let gIdx = 100;
+            products.forEach(p => {
+                const gridId = 'grid-' + (p.collection || 'floral-paradise');
+                const grid = document.getElementById(gridId);
+                if (!grid) return;
+                const id = ++gIdx;
+                const html = `
+                    <div class="collection-card-product">
+                        <div class="collection-card-images">
+                            <div class="collection-card-main active" id="ccImg${id}-1">
+                                <img src="${p.imgFront || ''}" alt="${p.name} Front">
+                            </div>
+                            <div class="collection-card-main" id="ccImg${id}-2">
+                                <img src="${p.imgBack || ''}" alt="${p.name} Back">
+                            </div>
+                            <div class="collection-card-thumbs">
+                                <button class="cc-thumb active" data-group="${id}" data-img="1"><img src="${p.imgFront || ''}" alt=""></button>
+                                <button class="cc-thumb" data-group="${id}" data-img="2"><img src="${p.imgBack || ''}" alt=""></button>
+                            </div>
+                        </div>
+                        <div class="collection-card-info">
+                            <h4 class="collection-card-name">${p.name}</h4>
+                            <p class="collection-card-desc">${p.desc || ''}</p>
+                            <div class="collection-card-sizes">
+                                <button class="cc-size">S</button>
+                                <button class="cc-size">M</button>
+                                <button class="cc-size active">L</button>
+                                <button class="cc-size">XL</button>
+                            </div>
+                            <div class="collection-card-bottom">
+                                <span class="collection-card-price">${parseInt(p.price).toLocaleString('ru-RU')} ₽</span>
+                                <button class="collection-card-buy" data-name="${p.name}" data-price="${p.price}" data-image="${p.imgFront || ''}">В корзину</button>
+                            </div>
+                        </div>
+                    </div>`;
+                grid.insertAdjacentHTML('beforeend', html);
+            });
+            document.querySelectorAll('.collection-card-buy').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const product = btn.closest('.collection-card-product');
+                    const activeSize = product.querySelector('.cc-size.active');
+                    const size = activeSize ? activeSize.textContent : 'L';
+                    addToCart(btn.dataset.name, parseInt(btn.dataset.price), size, btn.dataset.image);
+                });
+            });
+        }
+        loadCollectionProducts();
+
+        // Event delegation for dynamically loaded cards
+        document.addEventListener('click', (e) => {
+            const thumb = e.target.closest('.cc-thumb');
+            if (thumb) {
+                const group = thumb.dataset.group;
+                const img = thumb.dataset.img;
+                const container = thumb.closest('.collection-card-images');
+                container.querySelectorAll('.cc-thumb').forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+                container.querySelectorAll('.collection-card-main').forEach(i => i.classList.remove('active'));
+                document.getElementById('ccImg' + group + '-' + img).classList.add('active');
+            }
+            const sizeBtn = e.target.closest('.cc-size');
+            if (sizeBtn) {
+                const list = sizeBtn.closest('.collection-card-sizes');
+                list.querySelectorAll('.cc-size').forEach(b => b.classList.remove('active'));
+                sizeBtn.classList.add('active');
+            }
+            const buyBtn = e.target.closest('.collection-card-buy');
+            if (buyBtn) {
+                const product = buyBtn.closest('.collection-card-product');
                 const activeSize = product.querySelector('.cc-size.active');
                 const size = activeSize ? activeSize.textContent : 'L';
-                const name = btn.dataset.name;
-                const price = parseInt(btn.dataset.price);
-                const image = btn.dataset.image;
-                addToCart(name, price, size, image);
-            });
+                addToCart(buyBtn.dataset.name, parseInt(buyBtn.dataset.price), size, buyBtn.dataset.image);
+            }
         });
 
         // Cart
