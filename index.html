@@ -2644,7 +2644,7 @@
                 <div class="category-icon">👕</div>
                 <div class="category-content">
                     <h3 class="category-name">Футболки</h3>
-                    <a href="#" class="category-link">Смотреть <span>→</span></a>
+                    <a href="#collections" class="category-link" id="viewAllTshirts">Смотреть <span>→</span></a>
                 </div>
             </div>
         </div>
@@ -2970,6 +2970,14 @@
                 document.getElementById('collectionTitle').textContent = tab.dataset.title;
                 document.getElementById('collectionSeason').textContent = tab.dataset.season;
             });
+        });
+
+        // View All T-Shirts
+        document.getElementById('viewAllTshirts').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.collection-panel').forEach(p => p.classList.add('active'));
+            document.querySelectorAll('.collection-expand').forEach(e => e.classList.add('open'));
+            document.getElementById('collections').scrollIntoView({ behavior: 'smooth' });
         });
 
         // Collection Card Image Switcher
