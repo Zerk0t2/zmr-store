@@ -2396,7 +2396,6 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="#home">Главная</a></li>
             <li><a href="#collections">Коллекции</a></li>
-            <li><a href="#categories">Категории</a></li>
             <li><a href="#about">О нас</a></li>
             <li><a href="#contact" class="nav-cta">Связаться</a></li>
         </ul>
@@ -2601,8 +2600,8 @@
             </h1>
             <p>Одежда, которая говорит за тебя. Минимализм, качество и уличный стиль в каждой детали.</p>
             <div class="hero-buttons">
-                <a href="#categories" class="btn-primary">
-                    Смотреть категории
+                <a href="#collections" class="btn-primary">
+                    Смотреть коллекции
                     <span>→</span>
                 </a>
             </div>
@@ -2630,25 +2629,6 @@
 
 
 
-
-    <!-- Categories -->
-    <section class="categories" id="categories">
-        <div class="section-header fade-up">
-            <div>
-                <p class="section-tag">Категории</p>
-                <h2 class="section-title">Найди свой стиль</h2>
-            </div>
-        </div>
-        <div class="categories-grid">
-            <div class="category-card fade-up">
-                <div class="category-icon">👕</div>
-                <div class="category-content">
-                    <h3 class="category-name">Футболки</h3>
-                    <a href="#collections" class="category-link" id="viewAllTshirts">Смотреть <span>→</span></a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Collections -->
     <section class="collections" id="collections">
@@ -2970,14 +2950,6 @@
                 document.getElementById('collectionTitle').textContent = tab.dataset.title;
                 document.getElementById('collectionSeason').textContent = tab.dataset.season;
             });
-        });
-
-        // View All T-Shirts
-        document.getElementById('viewAllTshirts').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.collection-panel').forEach(p => p.classList.add('active'));
-            document.querySelectorAll('.collection-expand').forEach(e => e.classList.add('open'));
-            document.getElementById('collections').scrollIntoView({ behavior: 'smooth' });
         });
 
         // Collection Card Image Switcher
