@@ -927,7 +927,10 @@
             display: block;
             background: #ffffff;
             image-rendering: auto;
-            transform: scale(1.15);
+        }
+
+        .collection-card-product.firebase-card .collection-card-main img {
+            transform: scale(1.4);
             transform-origin: center center;
         }
 
@@ -2995,7 +2998,7 @@
                 if (!grid) return;
                 const id = ++gIdx;
                 const html = `
-                    <div class="collection-card-product">
+                    <div class="collection-card-product firebase-card">
                         <div class="collection-card-images">
                             <div class="collection-card-main active" id="ccImg${id}-1">
                                 <img src="${p.imgFront || ''}" alt="${p.name} Front">
