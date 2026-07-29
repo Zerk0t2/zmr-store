@@ -2663,7 +2663,7 @@
                 <div class="collection-expand-header fade-up" id="collectionToggle">
                     <div class="collection-expand-info">
                         <h3 class="collection-expand-name">Floral Paradise</h3>
-                        <span class="collection-expand-count">3 вещи</span>
+                        <span class="collection-expand-count"></span>
                     </div>
                     <svg class="collection-expand-arrow" id="collectionArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
@@ -3028,13 +3028,22 @@
                     </div>`;
                 grid.insertAdjacentHTML('beforeend', html);
             });
-            document.querySelectorAll('.collection-card-buy').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const product = btn.closest('.collection-card-product');
-                    const activeSize = product.querySelector('.cc-size.active');
-                    const size = activeSize ? activeSize.textContent : 'L';
-                    addToCart(btn.dataset.name, parseInt(btn.dataset.price), size, btn.dataset.image);
-                });
+            document.querySelectorAll('.collection-expand').forEach(expand => {
+                const panel = expand.closest('.collection-panel');
+                if (!panel) return;
+                const grid = expand.querySelector('.collection-grid');
+                if (!grid) return;
+                const count = grid.querySelectorAll('.collection-card-product').length;
+                const countEl = expand.querySelector('.collection-expand-count');
+                if (countEl && count > 0) {
+                    const lastDigit = count % 10;
+                    const lastTwo = count % 100;
+                    let word = 'вещей';
+                    if (lastTwo >= 11 && lastTwo <= 19) word = 'вещей';
+                    else if (lastDigit === 1) word = 'вещь';
+                    else if (lastDigit >= 2 && lastDigit <= 4) word = 'вещи';
+                    countEl.textContent = count + ' ' + word;
+                }
             });
         }
         loadCollectionProducts();
