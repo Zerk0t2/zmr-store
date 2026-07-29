@@ -910,15 +910,19 @@
         .collection-card-main {
             background: #ffffff;
             display: none;
+            max-height: 300px;
+            overflow: hidden;
         }
 
         .collection-card-main.active {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .collection-card-main img {
             width: 100%;
-            max-height: 350px;
+            max-height: 300px;
             object-fit: contain;
             display: block;
             background: #ffffff;
